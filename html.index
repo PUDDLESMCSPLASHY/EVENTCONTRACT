@@ -380,3 +380,217 @@ Deposits will be applied to the Master Account. The Hotel may terminate the Agre
       submit.addEventListener('click', () => {
         const v = (pwInput.value || '').trim();
         if (v === '4273') {
+          document.getElementById('gate').style.display = 'none';
+          document.getElementById('app').style.display = '';
+          // Focus first field
+          document.getElementById('f1').focus();
+        } else {
+          error.textContent = 'Incorrect password. Please try again.';
+        }
+      });
+      pwInput.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') submit.click();
+      });
+    })();
+
+    // --- Helpers ---
+    function val(id) {
+      const el = document.getElementById(id);
+      return (el && el.value != null) ? el.value.trim() : '';
+    }
+    function parseAmount(raw) {
+      if (!raw) return NaN;
+      const cleaned = String(raw).replace(/[^0-9.\-]/g, '');
+      const num = parseFloat(cleaned);
+      return isFinite(num) ? num : NaN;
+    }
+    function formatCurrency(num) {
+      if (!isFinite(num)) return '';
+      return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(num);
+    }
+
+    // --- Agenda Table ---
+    const agendaBody = document.getElementById('agendaBody');
+    function addAgendaRow() {
+      const tr = document.createElement('tr');
+      const cols = 8;
+      for (let c = 0; c < cols; c++) {
+        const td = document.createElement('td');
+        const inp = document.createElement('input');
+        inp.type = 'text';
+        inp.placeholder = [
+          'MM/DD/YYYY','e.g., 6:00 PM – 9:00 PM','e.g., Banquet','e.g., Ballroom',
+          'e.g., Banquet','e.g., 120','e.g., 1500','e.g., 12000'
+        ][c];
+        inp.addEventListener('input', updatePreview);
+        td.appendChild(inp);
+        tr.appendChild(td);
+      }
+      agendaBody.appendChild(tr);
+    }
+    // Initialize two blank rows
+    addAgendaRow(); addAgendaRow();
+    document.getElementById('addAgendaRow').addEventListener('click', addAgendaRow);
+
+    // --- Radios & Deposit Table toggle ---
+    const depositTableSection = document.getElementById('depositTableSection');
+    function updateDepositVisibility() {
+      const dep = document.querySelector('input[name="deposit"]:checked');
+      const show = dep && (dep.value === 'yes9030' || dep.value === 'yesOther');
+      depositTableSection.style.display = show ? '' : 'none';
+    }
+    document.getElementById('depositGroup').addEventListener('change', () => {
+      updateDepositVisibility(); updatePreview();
+    });
+    document.getElementById('roomFeeGroup').addEventListener('change', updatePreview);
+    document.getElementById('billingGroup').addEventListener('change', updatePreview);
+    document.getElementById('cchGroup').addEventListener('change', updatePreview);
+
+    // --- Build text table for Agenda ---
+    function buildAgendaTextTable() {
+      const headers = [
+        'Date (MM/DD/YYYY)', 'Time (Start to Finish)', 'Event Type', 'Function Space',
+        'Setup Style', 'Anticipated Attendance', 'Room Rental', 'Minimum'
+      ];
+      const rows = [];
+      for (const tr of agendaBody.querySelectorAll('tr')) {
+        const cells = [...tr.querySelectorAll('td input')].map(inp => (inp.value || '').trim());
+        rows.push(cells);
+      }
+      // Build a simple markdown-like table for copy+paste
+      const sep = '|';
+      const headerLine = sep + headers.join(sep) + sep;
+      const ruleLine   = sep + headers.map(()=>'---').join(sep) + sep;
+      const rowLines   = rows.map(r => sep + r.map(c => c || ' ').join(sep) + sep);
+      return [headerLine, ruleLine, ...rowLines].join('\n');
+    }
+
+    // --- Build text table for Deposit Schedule (conditional) ---
+    function buildDepositTextTable() {
+      const depRows = document.querySelectorAll('#depositTable tbody tr');
+      const headers = ['Payment Type','Payment Form','Due Date','Deposit Amount','Notes'];
+      const sep = '|';
+      const headerLine = sep + headers.join(sep) + sep;
+      const ruleLine   = sep + headers.map(()=>'---').join(sep) + sep;
+      const rowLines = [];
+      depRows.forEach(tr => {
+        const tds = tr.querySelectorAll('td');
+        const vals = [];
+        // td0 Payment Type (text)
+        vals.push(tds[0].textContent.trim());
+        // td1 Payment Form (text)
+        vals.push(tds[1].textContent.trim());
+        // td2 Due Date (text or input)
+        const due = tds[2].querySelector('input') ? tds[2].querySelector('input').value.trim() : tds[2].textContent.trim();
+        vals.push(due || ' ');
+        // td3 Amount (input)
+        const amt = tds[3].querySelector('input') ? tds[3].querySelector('input').value.trim() : tds[3].textContent.trim();
+        vals.push(amt || ' ');
+        // td4 Notes (text)
+        vals.push(tds[4].textContent.trim());
+        rowLines.push(sep + vals.join(sep) + sep);
+      });
+      return [headerLine, ruleLine, ...rowLines].join('\n');
+    }
+
+    // --- Contract Preview Builder ---
+    function updatePreview() {
+      let tmpl = document.getElementById('templateArea').value || '';
+
+      // Replace basic placeholders [1]..[12]
+      for (let i = 1; i <= 12; i++) {
+        const re = new RegExp('\\[' + i + '\\]', 'g');
+        tmpl = tmpl.replace(re, (val('f' + i) || ''));
+      }
+
+      // Replace [9 + 11] and [10 + 12] math with formatted sums
+      const v9  = parseAmount(val('f9'));
+      const v10 = parseAmount(val('f10'));
+      const v11 = parseAmount(val('f11'));
+      const v12 = parseAmount(val('f12'));
+      const sum911 = formatCurrency((isFinite(v9) && isFinite(v11)) ? (v9 + v11) : NaN);
+      const sum1012 = formatCurrency((isFinite(v10) && isFinite(v12)) ? (v10 + v12) : NaN);
+      tmpl = tmpl.replace(/\[9 \+ 11\]/g, sum911 || '');
+      tmpl = tmpl.replace(/\[10 \+ 12\]/g, sum1012 || '');
+
+      // Format [9] and [10] if they appear with $ immediately before (light touch)
+      tmpl = tmpl.replace(/\$\[9\]/g, formatCurrency(isFinite(v9) ? v9 : NaN) || ('$' + (val('f9') || '')));
+      tmpl = tmpl.replace(/\$\[10\]/g, formatCurrency(isFinite(v10) ? v10 : NaN) || ('$' + (val('f10') || '')));
+
+      // Insert Function Agenda text table
+      tmpl = tmpl.replace(/\[insert table "Function Agenda"\]/g, buildAgendaTextTable());
+
+      // Conditional: Deposit Schedule table insertion
+      const depSel = document.querySelector('input[name="deposit"]:checked');
+      const showDeposit = depSel && (depSel.value === 'yes9030' || depSel.value === 'yesOther');
+      const depositTextTable = buildDepositTextTable();
+      if (showDeposit) {
+        tmpl = tmpl.replace(/\[Input table "Deposit Schedule" if either "Yes" option is selected\]/g, depositTextTable);
+      } else {
+        tmpl = tmpl.replace(/\[Input table "Deposit Schedule" if either "Yes" option is selected\]/g, '');
+      }
+
+      // Conditional: Function Room Usage Fees blocks
+      const roomFeeSel = document.querySelector('input[name="roomFee"]:checked');
+      const choice = roomFeeSel ? roomFeeSel.value : null;
+
+      // Remove WAIVED block if fee selected; or remove FEE block if waived selected
+      // Identify blocks by headings:
+      // "ROOM RENTAL FEE [if matching radio box is selected]" ... up to next heading "WAIVED ROOM RENTAL FEE ..."
+      // Then "WAIVED ROOM RENTAL FEE ..." ... up to next heading "Failure to Vacate"
+      function removeBlock(text, startHeading, endHeading) {
+        const startIdx = text.indexOf(startHeading);
+        if (startIdx === -1) return text;
+        const endIdx = text.indexOf(endHeading, startIdx + startHeading.length);
+        const cutoff = endIdx !== -1 ? endIdx : text.length;
+        return text.slice(0, startIdx) + text.slice(cutoff);
+      }
+      if (choice === 'fee') {
+        tmpl = removeBlock(tmpl, 'WAIVED ROOM RENTAL FEE [if matching radio box is selected]', 'Failure to Vacate');
+        // Also strip the marker "[if matching radio box is selected]" from retained heading
+        tmpl = tmpl.replace('ROOM RENTAL FEE [if matching radio box is selected]', 'ROOM RENTAL FEE');
+      } else if (choice === 'waived') {
+        tmpl = removeBlock(tmpl, 'ROOM RENTAL FEE [if matching radio box is selected]', 'WAIVED ROOM RENTAL FEE [if matching radio box is selected]');
+        tmpl = tmpl.replace('WAIVED ROOM RENTAL FEE [if matching radio box is selected]', 'WAIVED ROOM RENTAL FEE');
+      } else {
+        // No selection: keep both headings but remove markers
+        tmpl = tmpl.replace('ROOM RENTAL FEE [if matching radio box is selected]', 'ROOM RENTAL FEE');
+        tmpl = tmpl.replace('WAIVED ROOM RENTAL FEE [if matching radio box is selected]', 'WAIVED ROOM RENTAL FEE');
+      }
+
+      // Cosmetic: Convert '//' markers to blank line spacing
+      tmpl = tmpl.replace(/\n\/\/\s*/g, '\n\n');
+
+      // Set preview
+      document.getElementById('preview').textContent = tmpl;
+    }
+
+    // Wire inputs to live preview updates
+    for (let i = 1; i <= 12; i++) {
+      document.getElementById('f' + i).addEventListener('input', updatePreview);
+    }
+    document.querySelectorAll('.revInput').forEach(inp => inp.addEventListener('input', updatePreview));
+    document.querySelectorAll('.depDue, .depAmt').forEach(inp => inp.addEventListener('input', updatePreview));
+    document.getElementById('templateArea').addEventListener('input', updatePreview);
+    document.getElementById('refreshPreview').addEventListener('click', updatePreview);
+
+    // Initial preview
+    updateDepositVisibility();
+    updatePreview();
+
+    // Copy to clipboard
+    document.getElementById('copyPreview').addEventListener('click', async () => {
+      const text = document.getElementById('preview').textContent || '';
+      try {
+        await navigator.clipboard.writeText(text);
+        const btn = document.getElementById('copyPreview');
+        const old = btn.textContent;
+        btn.textContent = 'Copied!';
+        setTimeout(() => btn.textContent = old, 1500);
+      } catch {
+        alert('Copy failed. You can manually select and copy the text.');
+      }
+    });
+  </script>
+</body>
+</html>
