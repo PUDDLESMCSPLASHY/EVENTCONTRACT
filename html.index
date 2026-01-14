@@ -1,0 +1,382 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Compton Bentonville – Contract Outline Builder</title>
+  <style>
+    :root {
+      --bg: #f7f8fa;
+      --card: #ffffff;
+      --text: #172b4d;
+      --muted: #5e6c84;
+      --primary: #204d63;
+      --accent: #2b8a3e;
+      --danger: #b00020;
+      --border: #dee2e6;
+    }
+    html, body { height: 100%; }
+    body {
+      margin: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      background: var(--bg); color: var(--text);
+    }
+    header {
+      background: var(--primary); color: #fff; padding: 16px 24px;
+    }
+    header h1 { margin: 0; font-size: 18px; font-weight: 600; }
+    .container { max-width: 1080px; margin: 24px auto; padding: 0 16px; }
+    .grid { display: grid; gap: 16px; }
+    .cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 10px; padding: 16px;
+      box-shadow: 0 2px 6px rgba(0,0,0,.04);
+    }
+    .card h2 { margin: 0 0 8px; font-size: 18px; }
+    .card h3 { margin: 12px 0 6px; font-size: 16px; }
+    label { display: block; margin: 8px 0 4px; font-size: 14px; color: var(--muted); }
+    input[type="text"], input[type="email"], input[type="tel"], input[type="date"], textarea, select {
+      width: 100%; padding: 8px 10px; border: 1px solid var(--border);
+      border-radius: 8px; font-size: 14px; background: #fff; color: var(--text);
+    }
+    textarea { min-height: 180px; resize: vertical; }
+    table { width: 100%; border-collapse: collapse; margin-top: 8px; }
+    th, td { border: 1px solid var(--border); padding: 6px 8px; font-size: 13px; }
+    th { background: #f2f4f7; text-align: left; }
+    .btn-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
+    button {
+      background: var(--primary); color: #fff; border: none; padding: 8px 12px;
+      border-radius: 8px; font-size: 14px; cursor: pointer;
+    }
+    button.secondary { background: #42526e; }
+    button.success { background: var(--accent); }
+    button.danger { background: var(--danger); }
+    .inline-radio { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 8px; }
+    .inline-radio label { margin: 0; display: inline-flex; align-items: center; gap: 6px; color: var(--text); }
+    .muted { color: var(--muted); font-size: 13px; }
+    .preview {
+      white-space: pre-wrap; border: 1px dashed var(--border); background: #fbfcff;
+      padding: 12px; border-radius: 10px; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;
+    }
+    .footer-note { font-size: 12px; color: var(--muted); margin-top: 6px; }
+    /* Password Gate */
+    #gate {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.5);
+      display: grid; place-items: center; z-index: 9999;
+    }
+    #gate .panel {
+      width: 92%; max-width: 420px; background: #fff; border-radius: 12px;
+      box-shadow: 0 10px 24px rgba(0,0,0,.18); padding: 18px;
+      border: 1px solid var(--border);
+    }
+    #gate h2 { margin: 0 0 8px; font-size: 18px; }
+    #gate p { margin: 0 0 12px; color: var(--muted); font-size: 14px; }
+    #gate .error { color: var(--danger); font-size: 13px; min-height: 18px; }
+    @media (max-width: 800px) {
+      .cols-2 { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div id="gate" aria-modal="true" role="dialog">
+    <div class="panel">
+      <h2>Protected Page</h2>
+      <p>Please enter the password to access the contract builder.</p>
+      <label for="pw">Password</label>
+      <input type="password" id="pw" placeholder="Enter password" />
+      <div class="btn-row">
+        <button id="pwSubmit">Unlock</button>
+      </div>
+      <div class="error" id="pwError" role="alert" aria-live="polite"></div>
+      <p class="footer-note">Note: Client-side protection; not suitable for sensitive data.</p>
+    </div>
+  </div>
+
+  <header>
+    <h1>Compton Bentonville – Contract Outline Builder</h1>
+  </header>
+
+  <main class="container" id="app" style="display:none;">
+    <div class="grid cols-2">
+      <!-- Left: Core Inputs -->
+      <section class="card">
+        <h2>Group & Event Details (Fields 1–12)</h2>
+        <div class="grid cols-2">
+          <div>
+            <label for="f1">1) Name of Group/Contact</label>
+            <input id="f1" type="text" placeholder="e.g., Bentonville Art Expo" />
+          </div>
+          <div>
+            <label for="f2">2) Primary Contact Name</label>
+            <input id="f2" type="text" placeholder="e.g., Jane Doe" />
+          </div>
+          <div>
+            <label for="f3">3) Primary Contact Phone</label>
+            <input id="f3" type="tel" placeholder="e.g., (479) 555‑1234" />
+          </div>
+          <div>
+            <label for="f4">4) Primary Contact Email</label>
+            <input id="f4" type="email" placeholder="e.g., jane@example.com" />
+          </div>
+          <div>
+            <label for="f5">5) Primary Contact Address</label>
+            <input id="f5" type="text" placeholder="e.g., 123 Main St, Bentonville, AR 72712" />
+          </div>
+          <div>
+            <label for="f6">6) Event Name</label>
+            <input id="f6" type="text" placeholder="e.g., Annual Celebration Dinner" />
+          </div>
+          <div>
+            <label for="f7">7) Event Dates (Arrival/Departure)</label>
+            <input id="f7" type="text" placeholder="e.g., 04/10/2026 – 04/12/2026" />
+          </div>
+          <div>
+            <label for="f8">8) Concessions Offered</label>
+            <input id="f8" type="text" placeholder="e.g., 10% F&B discount; complimentary Wi‑Fi" />
+          </div>
+          <div>
+            <label for="f9">9) Total Function Room Revenue (no tax or fees)</label>
+            <input id="f9" type="text" placeholder="e.g., 3500" />
+          </div>
+          <div>
+            <label for="f10">10) Food and Beverage Minimum (no tax or fees)</label>
+            <input id="f10" type="text" placeholder="e.g., 12000" />
+          </div>
+          <div>
+            <label for="f11">11) Room Rental Taxes and Fees</label>
+            <input id="f11" type="text" placeholder="e.g., 805" />
+          </div>
+          <div>
+            <label for="f12">12) F&B Minimum Taxes and Fees</label>
+            <input id="f12" type="text" placeholder="e.g., 3456" />
+          </div>
+        </div>
+      </section>
+
+      <!-- Right: Radios -->
+      <section class="card">
+        <h2>Selections & Options</h2>
+        <h3>Function Room Usage Fees</h3>
+        <div class="inline-radio" id="roomFeeGroup">
+          <label><input type="radio" name="roomFee" value="fee" /> Room Rental Fee</label>
+          <label><input type="radio" name="roomFee" value="waived" /> Waived Room Rental Fee</label>
+        </div>
+
+        <h3>Deposit Schedule</h3>
+        <div class="inline-radio" id="depositGroup">
+          <label><input type="radio" name="deposit" value="yes9030" /> Yes – 90/30</label>
+          <label><input type="radio" name="deposit" value="yesOther" /> Yes – Other</label>
+          <label><input type="radio" name="deposit" value="no" /> No</label>
+        </div>
+
+        <h3>Direct Billing</h3>
+        <div class="inline-radio" id="billingGroup">
+          <label><input type="radio" name="billing" value="yes" /> Yes</label>
+          <label><input type="radio" name="billing" value="no" /> No</label>
+        </div>
+
+        <h3>Credit Card Hold</h3>
+        <div class="inline-radio" id="cchGroup">
+          <label><input type="radio" name="cch" value="yes" /> Yes</label>
+          <label><input type="radio" name="cch" value="no" /> No</label>
+        </div>
+        <p class="footer-note">Selections above control conditional sections in the final contract text.</p>
+      </section>
+    </div>
+
+    <!-- Function Agenda -->
+    <section class="card">
+      <h2>Function Agenda</h2>
+      <table id="agendaTable" aria-label="Function Agenda">
+        <thead>
+          <tr>
+            <th>Date (MM/DD/YYYY)</th>
+            <th>Time (Start to Finish)</th>
+            <th>Event Type</th>
+            <th>Function Space</th>
+            <th>Setup Style</th>
+            <th>Anticipated Attendance</th>
+            <th>Room Rental</th>
+            <th>Minimum</th>
+          </tr>
+        </thead>
+        <tbody id="agendaBody">
+          <!-- Two blank starter rows -->
+        </tbody>
+      </table>
+      <div class="btn-row">
+        <button id="addAgendaRow" class="secondary">Add another row</button>
+      </div>
+      <p class="footer-note">Tip: Fill out at least the Date, Time, Event Type, and Function Space for clarity.</p>
+    </section>
+
+    <!-- Anticipated Revenue -->
+    <section class="card">
+      <h2>Anticipated Revenue</h2>
+      <table aria-label="Anticipated Revenue">
+        <thead>
+          <tr>
+            <th>Category</th>
+            <th>Amount</th>
+          </tr>
+        </thead>
+        <tbody id="revBody">
+          <tr>
+            <td>Total anticipated Food and Beverage revenue</td>
+            <td><input type="text" class="revInput" placeholder="e.g., 12000" /></td>
+          </tr>
+          <tr>
+            <td>Anticipated Function Room usage fees</td>
+            <td><input type="text" class="revInput" placeholder="e.g., 3500" /></td>
+          </tr>
+          <tr>
+            <td>Additional anticipated revenue (if applicable)</td>
+            <td><input type="text" class="revInput" placeholder="e.g., 600" /></td>
+          </tr>
+          <tr>
+            <td>Total anticipated revenue</td>
+            <td><input type="text" class="revInput" placeholder="Manual or leave blank" /></td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Conditional Deposit Schedule Table -->
+    <section class="card" id="depositTableSection" style="display:none;">
+      <h2>Deposit Schedule</h2>
+      <table id="depositTable" aria-label="Deposit Schedule">
+        <thead>
+          <tr>
+            <th>Payment Type</th>
+            <th>Payment Form</th>
+            <th>Due Date</th>
+            <th>Deposit Amount</th>
+            <th>Notes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Deposit</td>
+            <td>Card/Wire</td>
+            <td>Upon Signing</td>
+            <td><input type="text" class="depAmt" placeholder="e.g., 25% of anticipated" /></td>
+            <td>25% of the anticipated charges</td>
+          </tr>
+          <tr>
+            <td>Deposit</td>
+            <td>Card/Wire</td>
+            <td><input type="text" class="depDue" placeholder="e.g., MM/DD/YYYY" /></td>
+            <td><input type="text" class="depAmt" placeholder="e.g., 50% of anticipated" /></td>
+            <td>50% of the anticipated charges</td>
+          </tr>
+          <tr>
+            <td>Deposit</td>
+            <td>Card/Wire</td>
+            <td><input type="text" class="depDue" placeholder="e.g., MM/DD/YYYY" /></td>
+            <td><input type="text" class="depAmt" placeholder="e.g., remaining balance" /></td>
+            <td>Remaining balance of anticipated charges</td>
+          </tr>
+          <tr>
+            <td>Additional Deposit</td>
+            <td>Card/Wire</td>
+            <td><input type="text" class="depDue" placeholder="e.g., MM/DD/YYYY" /></td>
+            <td><input type="text" class="depAmt" placeholder="e.g., 10% post-event refund if unused" /></td>
+            <td>10% of the total anticipated revenue to be refund post‑event to the extent unused</td>
+          </tr>
+        </tbody>
+      </table>
+      <p class="footer-note">This table appears only when Deposit Schedule is set to “Yes – 90/30” or “Yes – Other”.</p>
+    </section>
+
+    <!-- Contract Template & Preview -->
+    <section class="card">
+      <h2>Contract Outline – Template</h2>
+      <p class="muted">You can edit the supporting text below. Placeholders like [1]…[12], [9 + 11], [10 + 12], and table insert markers will auto‑fill in the preview.</p>
+      <textarea id="templateArea">
+Catering Sales Agreement
+This Group Sales Agreement (the “Agreement”) is made by and between the legal owner entity of The Compton Bentonville (the “Hotel”) located at 200 East Central Ave., Bentonville, AR 72712, and [1] (the “Group”). This Agreement becomes binding only after it is executed by both parties. Blank spaces herein are intended to be completed at the time of contracting for a specific event and should remain blank until that time.
+// 
+DESCRIPTION OF GROUP AND EVENT
+Primary Contact Name    [2]
+Primary Contact Phone   [3]
+Primary Contact Email   [4]
+Primary Contact Address [5]
+Event Name              [6]
+Event Dates (Arrival/Departure) [7]
+// 
+Parking
+Hotel offers complimentary self parking in downtown Bentonville on a first come, first served basis. Guests may park in any public parking structure or surface lot in the vicinity of the hotel at the driver’s own risk and subject to availability. Hotel does not guarantee the availability of a specific space and is not liable for loss or damage to vehicles or their contents. Valet parking is available at the hotel’s front drive at a rate of $17 for day-use, or $30 per night, subject to prevailing taxes and fees.
+// 
+Special Concessions
+If specified in writing at the time of contracting, the Hotel may extend concessions. Any concessions will be contingent on the Group meeting its room night and food and beverage commitments and may be adjusted proportionately if actual revenues are reduced. All concessions are based upon minimum group room achievement and may, at Hotel’s sole discretion, be reduced or dissolved upon a lack of room night pickup.
+Concessions Offered By Hotel:
+• [8]
+// 
+FUNCTION ROOM AND CATERING SERVICES
+Function Agenda
+If the Group requires meeting or banquet facilities, the Hotel will reserve the function space described below:
+[insert table "Function Agenda"]
+The total anticipated function room revenue is $[9] (exclusive of taxes and service charges). The Hotel reserves the right to substitute function space with comparable space if the Group’s needs change or if the reserved space becomes unavailable.
+// 
+Function Room Usage Fees
+ROOM RENTAL FEE [if matching radio box is selected]
+The Hotel will charge the Group a function room usage fee as quoted above. Fees are subject to applicable taxes. The Hotel may adjust the fee if the Room Block or the size/number of functions is reduced.
+
+WAIVED ROOM RENTAL FEE [if matching radio box is selected]
+The Hotel will waive room rental fees if the Group meets the food and beverage minimum defined below. If the Group fails to meet the minimum, room rental fees at prevailing rates will be charged.
+// 
+Failure to Vacate
+All events must conclude, and all guests, vendors, and personal property must be fully vacated from the function space by the designated end time stated in the above function agenda. Failure to vacate the function space(s) by the agreed-upon time may result in additional charges, including but not limited to overtime labor fees, extended room rental, and security costs. The Compton Bentonville reserves the right to remove or dispose of any items left on the premises after the event concludes and shall not be held liable for any loss or damage resulting therefrom.
+// 
+Taxes, Service Charges, and Gratuities
+All charges are subject to a 23% service charge, as well as applicable federal, state, and local taxes. Taxes and service charges are subject to change at any time, and the Group shall be responsible for payment of any increases in effect at the time of the event. Additional gratuities are at the Group’s discretion. Please consult with your Sales Manager for a list of applicable taxes and fees.
+// 
+Function Room Set‑Up and Operation
+The Group must obtain the Hotel’s written approval before installing equipment, displays or decorations. The Group is responsible for any damage or injury arising from such items and shall indemnify and hold the Hotel harmless from related claims. Additional charges may apply for elaborate setups, specialty equipment, rigging or room re‑sets. Final function room setup specifications are due from the Group fourteen (14) days prior to the event start date. All function room setups must be approved by Hotel’s Conference Services Manager. Any setup changes requested within seventy‑two (72) hours of the event start date that the Hotel deems excessive will incur a minimum fee of five hundred dollars ($500).
+
+Glitter, confetti, loose sequins, rice, sparklers, open flames, or any similar materials are not permitted in any Hotel space. The Hotel reserves the right, at its sole discretion, to remove any decor that is deemed unsafe, damaging to the property, or not in alignment with Hotel guidelines.
+// 
+Approved Vendor List
+To preserve the quality, safety, and overall guest experience of events hosted at The Compton, the Hotel maintains an Approved Vendor List of qualified professionals. All vendors providing services on property must be selected from this list unless prior written approval is granted by the hotel. The current list of approved vendors will be made available to the Group upon request. The Hotel reserves the right to update or modify the Approved Vendor List at its discretion.
+// 
+Food and Beverage Minimum and Performance
+The rates and concessions offered are based on the food and beverage minimum. If the Group’s actual food and beverage revenue (excluding taxes, service charges, audio‑visual, parking and other miscellaneous charges) is less than $[10] (the “Food and Beverage Minimum”), then the Group shall pay as liquidated damages the difference between the minimum and actual revenue (the “Food and Beverage Performance Fee”). Any performance fee will be added to the Master Account. The Group remains liable for room rental fees and other charges.
+// 
+Food and Beverage Policies
+All food and beverage served on Hotel premises must be supplied and prepared by the Hotel, unless otherwise agreed in writing. Leftover food and beverage may not be removed from the Hotel. Menu selections must be provided no later than twenty-one (21) days prior to the Event start date (the “Menu Deadline”). Final attendance guarantees must be provided fourteen (14) days before the Event start date; otherwise, the number in this Agreement will be used. Charges will be based on the final guarantee even if fewer guests attend. The Hotel reserves the right to charge for special dietary requests not confirmed in writing.
+
+Menu offerings and pricing are confirmed ninety (90) days prior to the event start date. Any proposals shared or selections made more than ninety (90) days before the event start date are subject to change.
+// 
+BILLING AND CREDIT PROCEDURES
+Master Account and Authorized Representatives
+A “Master Account” will be established to record all charges payable by the Group under this Agreement (including sleeping rooms, food and beverage, room rental, audio‑visual, parking, service charges, taxes and performance/cancellation fees). The Group shall designate in writing, at least forty‑five (45) days prior to the Arrival Date, one or more representatives authorized to incur charges to the Master Account. The Group acknowledges that any person who signs a banquet event order or makes arrangements on site shall be deemed an authorized representative.
+[Input table "Deposit Schedule" if either "Yes" option is selected]
+// 
+Deposit Schedule Breakdown
+Room Rental = $[9] + Sales Taxes + 23% Service Fee = $[9 + 11]
+Food &amp; Beverage Minimum = $[10] + Sales Taxes + 23% Service Fee = $[10 + 12]
+Total Anticipated Revenue (inclusive of sales taxes/service fees) = $___
+
+Deposits will be applied to the Master Account. The Hotel may terminate the Agreement and retain deposits if any scheduled payment is not received.
+      </textarea>
+
+      <div class="btn-row">
+        <button id="refreshPreview" class="secondary">Refresh Preview</button>
+        <button id="copyPreview" class="success">Copy to Clipboard</button>
+      </div>
+
+      <h3>Live Preview</h3>
+      <div id="preview" class="preview" aria-live="polite"></div>
+    </section>
+  </main>
+
+  <script>
+    // --- Password Gate ---
+    (function gate() {
+      const pwInput = document.getElementById('pw');
+      const submit = document.getElementById('pwSubmit');
+      const error = document.getElementById('pwError');
+      submit.addEventListener('click', () => {
+        const v = (pwInput.value || '').trim();
+        if (v === '4273') {
