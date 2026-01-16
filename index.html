@@ -1,596 +1,986 @@
-
 <!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Compton Bentonville – Contract Outline Builder</title>
+  <title>The Compton Bentonville – Catering Sales Agreement Builder</title>
   <style>
-    :root {
-      --bg: #f7f8fa;
-      --card: #ffffff;
-      --text: #172b4d;
-      --muted: #5e6c84;
-      --primary: #204d63;
-      --accent: #2b8a3e;
-      --danger: #b00020;
-      --border: #dee2e6;
-    }
-    html, body { height: 100%; }
-    body {
-      margin: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
-      background: var(--bg); color: var(--text);
-    }
-    header {
-      background: var(--primary); color: #fff; padding: 16px 24px;
-    }
-    header h1 { margin: 0; font-size: 18px; font-weight: 600; }
-    .container { max-width: 1080px; margin: 24px auto; padding: 0 16px; }
-    .grid { display: grid; gap: 16px; }
-    .cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    .card {
-      background: var(--card); border: 1px solid var(--border);
-      border-radius: 10px; padding: 16px;
-      box-shadow: 0 2px 6px rgba(0,0,0,.04);
-    }
-    .card h2 { margin: 0 0 8px; font-size: 18px; }
-    .card h3 { margin: 12px 0 6px; font-size: 16px; }
-    label { display: block; margin: 8px 0 4px; font-size: 14px; color: var(--muted); }
-    input[type="text"], input[type="email"], input[type="tel"], input[type="date"], textarea, select {
-      width: 100%; padding: 8px 10px; border: 1px solid var(--border);
-      border-radius: 8px; font-size: 14px; background: #fff; color: var(--text);
-    }
-    textarea { min-height: 180px; resize: vertical; }
-    table { width: 100%; border-collapse: collapse; margin-top: 8px; }
-    th, td { border: 1px solid var(--border); padding: 6px 8px; font-size: 13px; }
-    th { background: #f2f4f7; text-align: left; }
-    .btn-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
-    button {
-      background: var(--primary); color: #fff; border: none; padding: 8px 12px;
-      border-radius: 8px; font-size: 14px; cursor: pointer;
-    }
-    button.secondary { background: #42526e; }
-    button.success { background: var(--accent); }
-    button.danger { background: var(--danger); }
-    .inline-radio { display: flex; gap: 16px; flex-wrap: wrap; margin-top: 8px; }
-    .inline-radio label { margin: 0; display: inline-flex; align-items: center; gap: 6px; color: var(--text); }
-    .muted { color: var(--muted); font-size: 13px; }
-    .preview {
-      white-space: pre-wrap; border: 1px dashed var(--border); background: #fbfcff;
-      padding: 12px; border-radius: 10px; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;
-    }
-    .footer-note { font-size: 12px; color: var(--muted); margin-top: 6px; }
-    /* Password Gate */
-    #gate {
-      position: fixed; inset: 0; background: rgba(0,0,0,0.5);
-      display: grid; place-items: center; z-index: 9999;
-    }
-    #gate .panel {
-      width: 92%; max-width: 420px; background: #fff; border-radius: 12px;
-      box-shadow: 0 10px 24px rgba(0,0,0,.18); padding: 18px;
-      border: 1px solid var(--border);
-    }
-    #gate h2 { margin: 0 0 8px; font-size: 18px; }
-    #gate p { margin: 0 0 12px; color: var(--muted); font-size: 14px; }
-    #gate .error { color: var(--danger); font-size: 13px; min-height: 18px; }
-    @media (max-width: 800px) {
-      .cols-2 { grid-template-columns: 1fr; }
-    }
+    :root { --accent:#0b6efd; --bg:#f8f9fb; --card:#ffffff; --text:#1f2937; --muted:#6b7280; --danger:#b91c1c; --ok:#155724; }
+    html,body{height:100%;}
+    body{margin:0; font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif; color:var(--text); background:var(--bg);}    
+    header{background:#111827; color:#fff; padding:16px 20px; display:flex; align-items:center; gap:12px; position:sticky; top:0; z-index:2;}
+    header h1{font-size:18px; margin:0; font-weight:600;}
+
+    .lock-screen{position:fixed; inset:0; background:#0f172a; color:#e5e7eb; display:flex; align-items:center; justify-content:center; z-index:9999;}
+    .lock-card{background:#111827; border:1px solid #1f2937; padding:28px; border-radius:12px; width:min(92vw,420px); box-shadow:0 10px 30px rgba(0,0,0,.4);}    
+    .lock-card h2{margin:0 0 8px; font-size:20px;}
+    .lock-card p{margin:0 0 16px; color:#9ca3af;}
+    .row{display:flex; gap:12px;}
+    .field{display:flex; flex-direction:column; gap:6px; margin-bottom:14px;}
+    label{font-size:13px; color:#374151; font-weight:600;}
+    input[type="text"], input[type="tel"], input[type="email"], input[type="number"], input[type="date"], textarea, select{padding:10px 12px; border:1px solid #d1d5db; border-radius:8px; background:#fff; font-size:14px;}
+    textarea{min-height:72px;}
+    button{background:var(--accent); color:#fff; border:none; padding:10px 14px; border-radius:8px; cursor:pointer; font-weight:600;}
+    button.secondary{background:#e5e7eb; color:#111827;}
+    button.link{background:transparent; color:var(--accent); padding:0; border:none;}
+    button.danger{background:var(--danger);}    
+    .container{max-width:1060px; margin:20px auto; padding:0 16px;}
+    .card{background:var(--card); border:1px solid #e5e7eb; border-radius:12px; padding:16px; margin-bottom:16px;}
+    .card h3{margin:0 0 12px; font-size:16px;}
+    table{width:100%; border-collapse:collapse;}
+    th, td{border:1px solid #e5e7eb; padding:8px; font-size:13px; vertical-align:top;}
+    th{background:#f3f4f6; text-align:left;}
+    .actions{display:flex; gap:10px; flex-wrap:wrap;}
+    .muted{color:#6b7280;}
+    .right{ text-align:right; }
+    .hidden{display:none;}
+    .totals{background:#f9fafb; border:1px dashed #d1d5db; padding:10px; border-radius:8px;}
+    .pill{display:inline-block; padding:2px 8px; border-radius:20px; background:#eef2ff; color:#3730a3; font-size:12px; font-weight:600;}
+    .footer{color:#6b7280; font-size:12px; text-align:center; padding:24px;}
   </style>
+  <!-- External libs for export -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js" integrity="sha512-5x3bqQ8G8nU3Qm7o4wEtC0BpvyEukgqS0bkkCm1cWg5kyR3O6jwxKF1u9IiMaivGi99ZTSdKCbFzN1vZ2Q5xSA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html-docx-js/0.4.1/html-docx.js" integrity="sha512-sy1mM/bwBTm9eG/v2e2JxQ6W8SL9X0wD5zYF7f0G4+R5i9uOq4r2n9P8s8w0mXcrbB1D2Y7b8FQZ8JmQQW4Q7w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" integrity="sha512-BNa5zs6g0a5K4SqsDNr4CemjP8h2rIuP2C9nO9VxDSHLVYDBlnJrped1IovnHgwlHGawEq+y3OC/qo+4Wr9L5w==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" integrity="sha512-Ykd3U6sypKekJy5o+1OtSWT8gJtIhXCTITVEWilQoNqT9XyM54q9WlH0I1GtIsfRSAxEPPYUajF2iGaGLjm/Xw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </head>
 <body>
-  <div id="gate" aria-modal="true" role="dialog">
-    <div class="panel">
-      <h2>Protected Page</h2>
-      <p>Please enter the password to access the contract builder.</p>
-      <label for="pw">Password</label>
-      <input type="password" id="pw" placeholder="Enter password" />
-      <div class="btn-row">
-        <button id="pwSubmit">Unlock</button>
+  <div class="lock-screen" id="lock">
+    <div class="lock-card">
+      <h2>Enter Password</h2>
+      <p>No lockout or penalty on failed attempts.</p>
+      <div class="field">
+        <label for="pw">Password</label>
+        <input type="password" id="pw" placeholder="Enter password" />
       </div>
-      <div class="error" id="pwError" role="alert" aria-live="polite"></div>
-      <p class="footer-note">Note: Client-side protection; not suitable for sensitive data.</p>
+      <div class="actions">
+        <button id="unlockBtn">Unlock</button>
+        <button class="secondary" id="showHintBtn" type="button">Hint</button>
+        <span id="hint" class="muted" style="display:none">It is 4 digits.</span>
+      </div>
+      <p id="lockMsg" class="muted" style="margin-top:10px"></p>
     </div>
   </div>
 
   <header>
-    <h1>Compton Bentonville – Contract Outline Builder</h1>
+    <h1>Catering Sales Agreement Builder</h1>
+    <span class="pill">The Compton Bentonville</span>
   </header>
 
-  <main class="container" id="app" style="display:none;">
-    <div class="grid cols-2">
-      <!-- Left: Core Inputs -->
-      <section class="card">
-        <h2>Group & Event Details (Fields 1–12)</h2>
-        <div class="grid cols-2">
-          <div>
-            <label for="f1">1) Name of Group/Contact</label>
-            <input id="f1" type="text" placeholder="e.g., Bentonville Art Expo" />
-          </div>
-          <div>
-            <label for="f2">2) Primary Contact Name</label>
-            <input id="f2" type="text" placeholder="e.g., Jane Doe" />
-          </div>
-          <div>
-            <label for="f3">3) Primary Contact Phone</label>
-            <input id="f3" type="tel" placeholder="e.g., (479) 555‑1234" />
-          </div>
-          <div>
-            <label for="f4">4) Primary Contact Email</label>
-            <input id="f4" type="email" placeholder="e.g., jane@example.com" />
-          </div>
-          <div>
-            <label for="f5">5) Primary Contact Address</label>
-            <input id="f5" type="text" placeholder="e.g., 123 Main St, Bentonville, AR 72712" />
-          </div>
-          <div>
-            <label for="f6">6) Event Name</label>
-            <input id="f6" type="text" placeholder="e.g., Annual Celebration Dinner" />
-          </div>
-          <div>
-            <label for="f7">7) Event Dates (Arrival/Departure)</label>
-            <input id="f7" type="text" placeholder="e.g., 04/10/2026 – 04/12/2026" />
-          </div>
-          <div>
-            <label for="f8">8) Concessions Offered</label>
-            <input id="f8" type="text" placeholder="e.g., 10% F&B discount; complimentary Wi‑Fi" />
-          </div>
-          <div>
-            <label for="f9">9) Total Function Room Revenue (no tax or fees)</label>
-            <input id="f9" type="text" placeholder="e.g., 3500" />
-          </div>
-          <div>
-            <label for="f10">10) Food and Beverage Minimum (no tax or fees)</label>
-            <input id="f10" type="text" placeholder="e.g., 12000" />
-          </div>
-          <div>
-            <label for="f11">11) Room Rental Taxes and Fees</label>
-            <input id="f11" type="text" placeholder="e.g., 805" />
-          </div>
-          <div>
-            <label for="f12">12) F&B Minimum Taxes and Fees</label>
-            <input id="f12" type="text" placeholder="e.g., 3456" />
-          </div>
-        </div>
-      </section>
+  <div class="container" id="app" style="display:none">
 
-      <!-- Right: Radios -->
-      <section class="card">
-        <h2>Selections & Options</h2>
-        <h3>Function Room Usage Fees</h3>
-        <div class="inline-radio" id="roomFeeGroup">
-          <label><input type="radio" name="roomFee" value="fee" /> Room Rental Fee</label>
-          <label><input type="radio" name="roomFee" value="waived" /> Waived Room Rental Fee</label>
+    <div class="card">
+      <h3>A) Group & Event Overview</h3>
+      <div class="row">
+        <div class="field" style="flex:2">
+          <label>Group / Organization Name</label>
+          <input type="text" id="groupName"/>
         </div>
-
-        <h3>Deposit Schedule</h3>
-        <div class="inline-radio" id="depositGroup">
-          <label><input type="radio" name="deposit" value="yes9030" /> Yes – 90/30</label>
-          <label><input type="radio" name="deposit" value="yesOther" /> Yes – Other</label>
-          <label><input type="radio" name="deposit" value="no" /> No</label>
+        <div class="field" style="flex:1">
+          <label>Event Name</label>
+          <input type="text" id="eventName"/>
         </div>
-
-        <h3>Direct Billing</h3>
-        <div class="inline-radio" id="billingGroup">
-          <label><input type="radio" name="billing" value="yes" /> Yes</label>
-          <label><input type="radio" name="billing" value="no" /> No</label>
+      </div>
+      <div class="row">
+        <div class="field" style="flex:1">
+          <label>Primary Contact – First & Last Name</label>
+          <input type="text" id="pcName"/>
         </div>
-
-        <h3>Credit Card Hold</h3>
-        <div class="inline-radio" id="cchGroup">
-          <label><input type="radio" name="cch" value="yes" /> Yes</label>
-          <label><input type="radio" name="cch" value="no" /> No</label>
+        <div class="field" style="flex:1">
+          <label>Phone</label>
+          <input type="tel" id="pcPhone"/>
         </div>
-        <p class="footer-note">Selections above control conditional sections in the final contract text.</p>
-      </section>
+        <div class="field" style="flex:1">
+          <label>Email</label>
+          <input type="email" id="pcEmail"/>
+        </div>
+      </div>
+      <div class="field">
+        <label>Primary Contact – Address</label>
+        <textarea id="pcAddress" placeholder="Street, City, State ZIP"></textarea>
+      </div>
+      <div class="row">
+        <div class="field" style="flex:1">
+          <label>Arrival Date</label>
+          <input type="date" id="arrival"/>
+        </div>
+        <div class="field" style="flex:1">
+          <label>Departure Date</label>
+          <input type="date" id="departure"/>
+        </div>
+      </div>
     </div>
 
-    <!-- Function Agenda -->
-    <section class="card">
-      <h2>Function Agenda</h2>
-      <table id="agendaTable" aria-label="Function Agenda">
+    <div class="card">
+      <h3>B) Parking & Special Concessions</h3>
+      <div class="field">
+        <label><input type="checkbox" id="includeConcessions"/> Include Special Concessions section</label>
+      </div>
+      <div class="field" id="concessionsWrap" class="hidden">
+        <label>Concessions Offered by Hotel</label>
+        <textarea id="concessionsText" placeholder="List any concessions to include"></textarea>
+      </div>
+    </div>
+
+    <div class="card">
+      <h3>C) Function Agenda <span class="muted">(add rows for multi‑day/multi‑space)</span></h3>
+      <div class="actions" style="margin-bottom:8px">
+        <button type="button" id="addAgendaRowBtn">+ Add Row</button>
+      </div>
+      <table id="agendaTable">
         <thead>
           <tr>
-            <th>Date (MM/DD/YYYY)</th>
-            <th>Time (Start to Finish)</th>
+            <th>Date</th>
+            <th>Time (free text)</th>
             <th>Event Type</th>
             <th>Function Space</th>
             <th>Setup Style</th>
             <th>Anticipated Attendance</th>
-            <th>Room Rental</th>
-            <th>Minimum</th>
+            <th>Room Rental (USD)</th>
+            <th>F&B Minimum (USD)</th>
+            <th></th>
           </tr>
         </thead>
-        <tbody id="agendaBody">
-          <!-- Two blank starter rows -->
-        </tbody>
+        <tbody></tbody>
       </table>
-      <div class="btn-row">
-        <button id="addAgendaRow" class="secondary">Add another row</button>
+      <div class="row" style="margin-top:10px">
+        <div class="field" style="flex:1">
+          <label>Total Anticipated Function Room Revenue (auto‑sum)</label>
+          <input type="text" id="totalRoomRentalAuto" readonly />
+        </div>
+        <div class="field" style="flex:1">
+          <label>Override Total Function Room Revenue (optional)</label>
+          <input type="text" id="totalRoomRentalOverride" placeholder="$0.00" />
+        </div>
       </div>
-      <p class="footer-note">Tip: Fill out at least the Date, Time, Event Type, and Function Space for clarity.</p>
-    </section>
+      <div class="totals">
+        <div><strong>Tax/Service Calculation Rules</strong></div>
+        <ul>
+          <li><strong>Function Room Fees:</strong> Apply <b>2% A&P</b> and <b>23% service</b> to the room subtotal; then apply <b>9.5% sales tax</b> to the <em>service fee amount only</em>.</li>
+          <li><strong>F&B Minimums:</strong> Apply <b>10.5% sales tax</b> and <b>23% service</b> to the F&B subtotal; then apply <b>9.5% sales tax</b> to the <em>service fee amount only</em>.</li>
+          <li>Date format in outputs: <em>Friday, January 16, 2026</em>.</li>
+        </ul>
+      </div>
+    </div>
 
-    <!-- Anticipated Revenue -->
-    <section class="card">
-      <h2>Anticipated Revenue</h2>
-      <table aria-label="Anticipated Revenue">
-        <thead>
-          <tr>
-            <th>Category</th>
-            <th>Amount</th>
-          </tr>
-        </thead>
-        <tbody id="revBody">
-          <tr>
-            <td>Total anticipated Food and Beverage revenue</td>
-            <td><input type="text" class="revInput" placeholder="e.g., 12000" /></td>
-          </tr>
-          <tr>
-            <td>Anticipated Function Room usage fees</td>
-            <td><input type="text" class="revInput" placeholder="e.g., 3500" /></td>
-          </tr>
-          <tr>
-            <td>Additional anticipated revenue (if applicable)</td>
-            <td><input type="text" class="revInput" placeholder="e.g., 600" /></td>
-          </tr>
-          <tr>
-            <td>Total anticipated revenue</td>
-            <td><input type="text" class="revInput" placeholder="Manual or leave blank" /></td>
-          </tr>
-        </tbody>
-      </table>
-    </section>
+    <div class="card">
+      <h3>D) Food & Beverage Minimums</h3>
+      <div class="row">
+        <div class="field" style="flex:1">
+          <label>Overall F&B Minimum (USD)</label>
+          <input type="text" id="fnbOverall" placeholder="$0.00" />
+        </div>
+        <div class="field" style="flex:1; align-items:flex-end; justify-content:flex-end;">
+          <label><input type="checkbox" id="includePerDayFnb"/> Include Per‑Day F&B Minimum Clause</label>
+        </div>
+      </div>
+      <div id="perDayFnbWrap" class="hidden">
+        <div class="actions" style="margin-bottom:8px">
+          <button type="button" id="addPerDayRowBtn">+ Add Per‑Day Minimum</button>
+        </div>
+        <table id="perDayTable">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>F&B Minimum (USD)</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
 
-    <!-- Conditional Deposit Schedule Table -->
-    <section class="card" id="depositTableSection" style="display:none;">
-      <h2>Deposit Schedule</h2>
-      <table id="depositTable" aria-label="Deposit Schedule">
-        <thead>
-          <tr>
-            <th>Payment Type</th>
-            <th>Payment Form</th>
-            <th>Due Date</th>
-            <th>Deposit Amount</th>
-            <th>Notes</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>Deposit</td>
-            <td>Card/Wire</td>
-            <td>Upon Signing</td>
-            <td><input type="text" class="depAmt" placeholder="e.g., 25% of anticipated" /></td>
-            <td>25% of the anticipated charges</td>
-          </tr>
-          <tr>
-            <td>Deposit</td>
-            <td>Card/Wire</td>
-            <td><input type="text" class="depDue" placeholder="e.g., MM/DD/YYYY" /></td>
-            <td><input type="text" class="depAmt" placeholder="e.g., 50% of anticipated" /></td>
-            <td>50% of the anticipated charges</td>
-          </tr>
-          <tr>
-            <td>Deposit</td>
-            <td>Card/Wire</td>
-            <td><input type="text" class="depDue" placeholder="e.g., MM/DD/YYYY" /></td>
-            <td><input type="text" class="depAmt" placeholder="e.g., remaining balance" /></td>
-            <td>Remaining balance of anticipated charges</td>
-          </tr>
-          <tr>
-            <td>Additional Deposit</td>
-            <td>Card/Wire</td>
-            <td><input type="text" class="depDue" placeholder="e.g., MM/DD/YYYY" /></td>
-            <td><input type="text" class="depAmt" placeholder="e.g., 10% post-event refund if unused" /></td>
-            <td>10% of the total anticipated revenue to be refund post‑event to the extent unused</td>
-          </tr>
-        </tbody>
-      </table>
-      <p class="footer-note">This table appears only when Deposit Schedule is set to “Yes – 90/30” or “Yes – Other”.</p>
-    </section>
-
-    <!-- Contract Template & Preview -->
-    <section class="card">
-      <h2>Contract Outline – Template</h2>
-      <p class="muted">You can edit the supporting text below. Placeholders like [1]…[12], [9 + 11], [10 + 12], and table insert markers will auto‑fill in the preview.</p>
-      <textarea id="templateArea">
-Catering Sales Agreement
-This Group Sales Agreement (the “Agreement”) is made by and between the legal owner entity of The Compton Bentonville (the “Hotel”) located at 200 East Central Ave., Bentonville, AR 72712, and [1] (the “Group”). This Agreement becomes binding only after it is executed by both parties. Blank spaces herein are intended to be completed at the time of contracting for a specific event and should remain blank until that time.
-// 
-DESCRIPTION OF GROUP AND EVENT
-Primary Contact Name    [2]
-Primary Contact Phone   [3]
-Primary Contact Email   [4]
-Primary Contact Address [5]
-Event Name              [6]
-Event Dates (Arrival/Departure) [7]
-// 
-Parking
-Hotel offers complimentary self parking in downtown Bentonville on a first come, first served basis. Guests may park in any public parking structure or surface lot in the vicinity of the hotel at the driver’s own risk and subject to availability. Hotel does not guarantee the availability of a specific space and is not liable for loss or damage to vehicles or their contents. Valet parking is available at the hotel’s front drive at a rate of $17 for day-use, or $30 per night, subject to prevailing taxes and fees.
-// 
-Special Concessions
-If specified in writing at the time of contracting, the Hotel may extend concessions. Any concessions will be contingent on the Group meeting its room night and food and beverage commitments and may be adjusted proportionately if actual revenues are reduced. All concessions are based upon minimum group room achievement and may, at Hotel’s sole discretion, be reduced or dissolved upon a lack of room night pickup.
-Concessions Offered By Hotel:
-• [8]
-// 
-FUNCTION ROOM AND CATERING SERVICES
-Function Agenda
-If the Group requires meeting or banquet facilities, the Hotel will reserve the function space described below:
-[insert table "Function Agenda"]
-The total anticipated function room revenue is $[9] (exclusive of taxes and service charges). The Hotel reserves the right to substitute function space with comparable space if the Group’s needs change or if the reserved space becomes unavailable.
-// 
-Function Room Usage Fees
-ROOM RENTAL FEE [if matching radio box is selected]
-The Hotel will charge the Group a function room usage fee as quoted above. Fees are subject to applicable taxes. The Hotel may adjust the fee if the Room Block or the size/number of functions is reduced.
-
-WAIVED ROOM RENTAL FEE [if matching radio box is selected]
-The Hotel will waive room rental fees if the Group meets the food and beverage minimum defined below. If the Group fails to meet the minimum, room rental fees at prevailing rates will be charged.
-// 
-Failure to Vacate
-All events must conclude, and all guests, vendors, and personal property must be fully vacated from the function space by the designated end time stated in the above function agenda. Failure to vacate the function space(s) by the agreed-upon time may result in additional charges, including but not limited to overtime labor fees, extended room rental, and security costs. The Compton Bentonville reserves the right to remove or dispose of any items left on the premises after the event concludes and shall not be held liable for any loss or damage resulting therefrom.
-// 
-Taxes, Service Charges, and Gratuities
-All charges are subject to a 23% service charge, as well as applicable federal, state, and local taxes. Taxes and service charges are subject to change at any time, and the Group shall be responsible for payment of any increases in effect at the time of the event. Additional gratuities are at the Group’s discretion. Please consult with your Sales Manager for a list of applicable taxes and fees.
-// 
-Function Room Set‑Up and Operation
-The Group must obtain the Hotel’s written approval before installing equipment, displays or decorations. The Group is responsible for any damage or injury arising from such items and shall indemnify and hold the Hotel harmless from related claims. Additional charges may apply for elaborate setups, specialty equipment, rigging or room re‑sets. Final function room setup specifications are due from the Group fourteen (14) days prior to the event start date. All function room setups must be approved by Hotel’s Conference Services Manager. Any setup changes requested within seventy‑two (72) hours of the event start date that the Hotel deems excessive will incur a minimum fee of five hundred dollars ($500).
-
-Glitter, confetti, loose sequins, rice, sparklers, open flames, or any similar materials are not permitted in any Hotel space. The Hotel reserves the right, at its sole discretion, to remove any decor that is deemed unsafe, damaging to the property, or not in alignment with Hotel guidelines.
-// 
-Approved Vendor List
-To preserve the quality, safety, and overall guest experience of events hosted at The Compton, the Hotel maintains an Approved Vendor List of qualified professionals. All vendors providing services on property must be selected from this list unless prior written approval is granted by the hotel. The current list of approved vendors will be made available to the Group upon request. The Hotel reserves the right to update or modify the Approved Vendor List at its discretion.
-// 
-Food and Beverage Minimum and Performance
-The rates and concessions offered are based on the food and beverage minimum. If the Group’s actual food and beverage revenue (excluding taxes, service charges, audio‑visual, parking and other miscellaneous charges) is less than $[10] (the “Food and Beverage Minimum”), then the Group shall pay as liquidated damages the difference between the minimum and actual revenue (the “Food and Beverage Performance Fee”). Any performance fee will be added to the Master Account. The Group remains liable for room rental fees and other charges.
-// 
-Food and Beverage Policies
-All food and beverage served on Hotel premises must be supplied and prepared by the Hotel, unless otherwise agreed in writing. Leftover food and beverage may not be removed from the Hotel. Menu selections must be provided no later than twenty-one (21) days prior to the Event start date (the “Menu Deadline”). Final attendance guarantees must be provided fourteen (14) days before the Event start date; otherwise, the number in this Agreement will be used. Charges will be based on the final guarantee even if fewer guests attend. The Hotel reserves the right to charge for special dietary requests not confirmed in writing.
-
-Menu offerings and pricing are confirmed ninety (90) days prior to the event start date. Any proposals shared or selections made more than ninety (90) days before the event start date are subject to change.
-// 
-BILLING AND CREDIT PROCEDURES
-Master Account and Authorized Representatives
-A “Master Account” will be established to record all charges payable by the Group under this Agreement (including sleeping rooms, food and beverage, room rental, audio‑visual, parking, service charges, taxes and performance/cancellation fees). The Group shall designate in writing, at least forty‑five (45) days prior to the Arrival Date, one or more representatives authorized to incur charges to the Master Account. The Group acknowledges that any person who signs a banquet event order or makes arrangements on site shall be deemed an authorized representative.
-[Input table "Deposit Schedule" if either "Yes" option is selected]
-// 
-Deposit Schedule Breakdown
-Room Rental = $[9] + Sales Taxes + 23% Service Fee = $[9 + 11]
-Food &amp; Beverage Minimum = $[10] + Sales Taxes + 23% Service Fee = $[10 + 12]
-Total Anticipated Revenue (inclusive of sales taxes/service fees) = $___
-
-Deposits will be applied to the Master Account. The Hotel may terminate the Agreement and retain deposits if any scheduled payment is not received.
-      </textarea>
-
-      <div class="btn-row">
-        <button id="refreshPreview" class="secondary">Refresh Preview</button>
-        <button id="copyPreview" class="success">Copy to Clipboard</button>
+    <div class="card">
+      <h3>E/F) Billing Method</h3>
+      <div class="field">
+        <label>Choose one</label>
+        <div>
+          <label><input type="radio" name="billingMethod" value="deposit" checked> Deposit Schedule</label>
+          <label style="margin-left:18px"><input type="radio" name="billingMethod" value="direct"> Direct Billing</label>
+        </div>
       </div>
 
-      <h3>Live Preview</h3>
-      <div id="preview" class="preview" aria-live="polite"></div>
-    </section>
-  </main>
+      <div id="depositWrap">
+        <div class="actions" style="margin-bottom:8px">
+          <button type="button" id="addDepositRowBtn">+ Add Deposit Row</button>
+        </div>
+        <table id="depositTable">
+          <thead>
+            <tr>
+              <th>Payment Type</th>
+              <th>Payment Form</th>
+              <th>Due Date (text or date)</th>
+              <th>Deposit Amount (USD)</th>
+              <th>Notes</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+        <div class="totals" style="margin-top:10px">
+          <div style="font-weight:700; margin-bottom:6px">Deposit Schedule Breakdown (auto‑calc)</div>
+          <div class="row">
+            <div class="field" style="flex:1">
+              <label>Room Rental Subtotal (from C)</label>
+              <input type="text" id="roomSubTotal" readonly />
+            </div>
+            <div class="field" style="flex:1">
+              <label>F&B Subtotal (from D)</label>
+              <input type="text" id="fnbSubTotal" readonly />
+            </div>
+          </div>
+          <div class="row">
+            <div class="field" style="flex:1">
+              <label>Room – A&P (2%)</label>
+              <input type="text" id="roomAP" readonly />
+            </div>
+            <div class="field" style="flex:1">
+              <label>Room – Service (23%)</label>
+              <input type="text" id="roomService" readonly />
+            </div>
+            <div class="field" style="flex:1">
+              <label>Room – Sales Tax on Service (9.5%)</label>
+              <input type="text" id="roomServiceTax" readonly />
+            </div>
+          </div>
+          <div class="row">
+            <div class="field" style="flex:1">
+              <label>F&B – Sales Tax (10.5%)</label>
+              <input type="text" id="fnbTax105" readonly />
+            </div>
+            <div class="field" style="flex:1">
+              <label>F&B – Service (23%)</label>
+              <input type="text" id="fnbService" readonly />
+            </div>
+            <div class="field" style="flex:1">
+              <label>F&B – Sales Tax on Service (9.5%)</label>
+              <input type="text" id="fnbServiceTax95" readonly />
+            </div>
+          </div>
+          <div class="row">
+            <div class="field" style="flex:1">
+              <label>Total Anticipated Revenue (incl. taxes/service)</label>
+              <input type="text" id="grandTotal" readonly />
+            </div>
+          </div>
+        </div>
+      </div>
 
-  <script>
-    // --- Password Gate ---
-    (function gate() {
-      const pwInput = document.getElementById('pw');
-      const submit = document.getElementById('pwSubmit');
-      const error = document.getElementById('pwError');
-      submit.addEventListener('click', () => {
-        const v = (pwInput.value || '').trim();
-        if (v === '4273') {
-          document.getElementById('gate').style.display = 'none';
-          document.getElementById('app').style.display = '';
-          // Focus first field
-          document.getElementById('f1').focus();
-        } else {
-          error.textContent = 'Incorrect password. Please try again.';
-        }
-      });
-      pwInput.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter') submit.click();
-      });
-    })();
+      <div id="directWrap" class="hidden">
+        <div class="field">
+          <label>Direct Billing Options</label>
+          <div>
+            <label><input type="radio" name="directOption" value="cchold" checked> Credit Card Hold</label>
+            <label style="margin-left:18px"><input type="radio" name="directOption" value="billnow"> Bill 100% at time of signing</label>
+          </div>
+        </div>
+        <div id="ccHoldFields">
+          <div class="row">
+            <div class="field" style="flex:1">
+              <label>Credit Card Hold Amount (USD)</label>
+              <input type="text" id="ccHoldAmount" placeholder="$0.00" />
+            </div>
+            <div class="field" style="flex:1">
+              <label>Convert hold to deposit X days before arrival (optional)</label>
+              <input type="number" id="ccConvertDays" min="0" placeholder="e.g., 14" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
-    // --- Helpers ---
-    function val(id) {
-      const el = document.getElementById(id);
-      return (el && el.value != null) ? el.value.trim() : '';
-    }
-    function parseAmount(raw) {
-      if (!raw) return NaN;
-      const cleaned = String(raw).replace(/[^0-9.\-]/g, '');
-      const num = parseFloat(cleaned);
-      return isFinite(num) ? num : NaN;
-    }
-    function formatCurrency(num) {
-      if (!isFinite(num)) return '';
-      return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(num);
-    }
+    <div class="card">
+      <h3>G) Cancellation – Revenue Summary</h3>
+      <div class="row">
+        <div class="field" style="flex:1">
+          <label>Total Anticipated Food & Beverage Revenue (USD)</label>
+          <input type="text" id="cancelFnb" placeholder="$0.00" />
+        </div>
+        <div class="field" style="flex:1">
+          <label>Anticipated Function Room Usage Fees (USD)</label>
+          <input type="text" id="cancelRoom" placeholder="$0.00" />
+        </div>
+        <div class="field" style="flex:1">
+          <label>Anticipated Additional Revenue (USD)</label>
+          <input type="text" id="cancelOther" placeholder="$0.00" />
+        </div>
+      </div>
+      <div class="row">
+        <div class="field" style="flex:1">
+          <label>Total Anticipated Revenue (auto‑sum)</label>
+          <input type="text" id="cancelTotal" readonly />
+        </div>
+      </div>
+    </div>
 
-    // --- Agenda Table ---
-    const agendaBody = document.getElementById('agendaBody');
-    function addAgendaRow() {
-      const tr = document.createElement('tr');
-      const cols = 8;
-      for (let c = 0; c < cols; c++) {
-        const td = document.createElement('td');
-        const inp = document.createElement('input');
-        inp.type = 'text';
-        inp.placeholder = [
-          'MM/DD/YYYY','e.g., 6:00 PM – 9:00 PM','e.g., Banquet','e.g., Ballroom',
-          'e.g., Banquet','e.g., 120','e.g., 1500','e.g., 12000'
-        ][c];
-        inp.addEventListener('input', updatePreview);
-        td.appendChild(inp);
-        tr.appendChild(td);
-      }
-      agendaBody.appendChild(tr);
-    }
-    // Initialize two blank rows
-    addAgendaRow(); addAgendaRow();
-    document.getElementById('addAgendaRow').addEventListener('click', addAgendaRow);
+    <div class="card">
+      <h3>Assets & Output</h3>
+      <div class="row">
+        <div class="field" style="flex:1">
+          <label>Upload Logo (optional)</label>
+          <input type="file" id="logoInput" accept="image/*" />
+        </div>
+        <div class="field" style="flex:1">
+          <label>Filename Pattern</label>
+          <input type="text" id="filenamePattern" value="CSA_{EventName}_{GroupName}_{YYYYMMDD}" />
+        </div>
+      </div>
+      <div class="actions">
+        <button id="btnPreview" type="button">Scroll to Preview</button>
+        <button id="btnDocx" type="button">Download DOCX</button>
+        <button id="btnPdf" type="button">Download PDF</button>
+        <button id="btnCopy" type="button" class="secondary">Copy Filled Text</button>
+        <button id="btnCopyRich" type="button" class="secondary">Copy Rich Text</button>
+      </div>
+    </div>
 
-    // --- Radios & Deposit Table toggle ---
-    const depositTableSection = document.getElementById('depositTableSection');
-    function updateDepositVisibility() {
-      const dep = document.querySelector('input[name="deposit"]:checked');
-      const show = dep && (dep.value === 'yes9030' || dep.value === 'yesOther');
-      depositTableSection.style.display = show ? '' : 'none';
+    <div class="card" id="previewCard">
+      <h3>Live Preview (always on — ready to copy)</h3>
+      <div id="preview" style="background:#fff; padding:24px; border:1px solid #e5e7eb; border-radius:8px; font-family: 'Georgia','Times New Roman',serif; font-size:14.5px; line-height:1.55;"></div>
+    </div>
+
+    <div class="footer">CSA Builder • Single‑page app for GitHub Pages • Password protected (client‑side)</div>
+
+  </div>
+
+<script>
+(function(){
+  // Password gate
+  const unlockBtn = document.getElementById('unlockBtn');
+  const pwInput = document.getElementById('pw');
+  const lock = document.getElementById('lock');
+  const app = document.getElementById('app');
+  const lockMsg = document.getElementById('lockMsg');
+  const hintBtn = document.getElementById('showHintBtn');
+  const hint = document.getElementById('hint');
+
+  function tryUnlock(){
+    if(pwInput.value === '4273'){
+      lock.style.display = 'none';
+      app.style.display = 'block';
+      // initial render when unlocking
+      if (typeof window.recalcAll === 'function') window.recalcAll();
+      if (typeof window.showPreview === 'function') window.showPreview();
+    } else {
+      lockMsg.textContent = 'Incorrect password. Please try again.';
+      pwInput.value = '';
+      pwInput.focus();
     }
-    document.getElementById('depositGroup').addEventListener('change', () => {
-      updateDepositVisibility(); updatePreview();
+  }
+  unlockBtn.addEventListener('click', tryUnlock);
+  pwInput.addEventListener('keydown', (e)=>{ if(e.key==='Enter'){ tryUnlock(); }});
+  hintBtn.addEventListener('click', ()=>{ hint.style.display = hint.style.display==='none' ? 'inline' : 'none';});
+
+  // Utilities
+  function fmtCurrency(n){
+    if(isNaN(n) || n===null) n = 0;
+    return n.toLocaleString('en-US',{style:'currency', currency:'USD'});
+  }
+  function parseCurrency(str){
+    if(!str) return 0;
+    return Number(String(str).replace(/[^0-9.-]/g,''))||0;
+  }
+  function longDate(str){
+    if(!str) return '';
+    const d = new Date(str + 'T12:00:00');
+    if(isNaN(d)) return str;
+    return new Intl.DateTimeFormat('en-US', { weekday:'long', year:'numeric', month:'long', day:'numeric' }).format(d);
+  }
+  function todayYYYYMMDD(){
+    const d = new Date();
+    const m = String(d.getMonth()+1).padStart(2,'0');
+    const day = String(d.getDate()).padStart(2,'0');
+    return `${d.getFullYear()}${m}${day}`;
+  }
+
+  // DOM refs
+  const includeConcessions = document.getElementById('includeConcessions');
+  const concessionsWrap = document.getElementById('concessionsWrap');
+  includeConcessions.addEventListener('change',()=>{
+    concessionsWrap.style.display = includeConcessions.checked ? 'block' : 'none';
+  });
+
+  const agendaTable = document.getElementById('agendaTable').querySelector('tbody');
+  document.getElementById('addAgendaRowBtn').addEventListener('click', addAgendaRow);
+
+  function addAgendaRow(vals={}){
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td><input type=\"date\" class=\"ag-date\" value=\"${vals.date||''}\"/></td>
+      <td><input type=\"text\" class=\"ag-time\" placeholder=\"e.g., 6:00–9:00 PM\" value=\"${vals.time||''}\"/></td>
+      <td><input type=\"text\" class=\"ag-type\" value=\"${vals.type||''}\"/></td>
+      <td><input type=\"text\" class=\"ag-space\" value=\"${vals.space||''}\"/></td>
+      <td><input type=\"text\" class=\"ag-setup\" value=\"${vals.setup||''}\"/></td>
+      <td><input type=\"number\" class=\"ag-heads\" min=\"0\" value=\"${vals.heads||''}\"/></td>
+      <td><input type=\"text\" class=\"ag-room\" value=\"${vals.room||''}\"/></td>
+      <td><input type=\"text\" class=\"ag-fnb\" value=\"${vals.fnb||''}\"/></td>
+      <td class=\"right\"><button type=\"button\" class=\"danger\" onclick=\"this.closest('tr').remove(); window.recalcAll(); window.showPreview();\">Remove</button></td>`;
+    agendaTable.appendChild(tr);
+    tr.querySelectorAll('input').forEach(inp=> inp.addEventListener('input', ()=>{ recalcAll(); showPreview(); }));
+    recalcAll();
+    showPreview();
+  }
+  // seed one row
+  addAgendaRow();
+
+  const totalRoomRentalAuto = document.getElementById('totalRoomRentalAuto');
+  const totalRoomRentalOverride = document.getElementById('totalRoomRentalOverride');
+  totalRoomRentalOverride.addEventListener('input', ()=>{ recalcAll(); showPreview(); });
+
+  const includePerDayFnb = document.getElementById('includePerDayFnb');
+  const perDayFnbWrap = document.getElementById('perDayFnbWrap');
+  includePerDayFnb.addEventListener('change', ()=>{
+    perDayFnbWrap.style.display = includePerDayFnb.checked ? 'block':'none';
+    recalcAll();
+    showPreview();
+  });
+
+  const perDayTable = document.getElementById('perDayTable').querySelector('tbody');
+  document.getElementById('addPerDayRowBtn').addEventListener('click', addPerDayRow);
+  function addPerDayRow(vals={}){
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td><input type=\"date\" class=\"pd-date\" value=\"${vals.date||''}\"/></td>
+      <td><input type=\"text\" class=\"pd-amt\" value=\"${vals.amt||''}\"/></td>
+      <td class=\"right\"><button type=\"button\" class=\"danger\" onclick=\"this.closest('tr').remove(); window.recalcAll(); window.showPreview();\">Remove</button></td>`;
+    perDayTable.appendChild(tr);
+    tr.querySelectorAll('input').forEach(inp=> inp.addEventListener('input', ()=>{ recalcAll(); showPreview(); }));
+    recalcAll();
+    showPreview();
+  }
+
+  // Billing method toggles
+  const depositWrap = document.getElementById('depositWrap');
+  const directWrap = document.getElementById('directWrap');
+  document.querySelectorAll('input[name=\"billingMethod\"]').forEach(r=>{
+    r.addEventListener('change', ()=>{
+      const val = document.querySelector('input[name=\"billingMethod\"]:checked').value;
+      depositWrap.classList.toggle('hidden', val!== 'deposit');
+      directWrap.classList.toggle('hidden', val!== 'direct');
+      showPreview();
     });
-    document.getElementById('roomFeeGroup').addEventListener('change', updatePreview);
-    document.getElementById('billingGroup').addEventListener('change', updatePreview);
-    document.getElementById('cchGroup').addEventListener('change', updatePreview);
+  });
 
-    // --- Build text table for Agenda ---
-    function buildAgendaTextTable() {
-      const headers = [
-        'Date (MM/DD/YYYY)', 'Time (Start to Finish)', 'Event Type', 'Function Space',
-        'Setup Style', 'Anticipated Attendance', 'Room Rental', 'Minimum'
-      ];
-      const rows = [];
-      for (const tr of agendaBody.querySelectorAll('tr')) {
-        const cells = [...tr.querySelectorAll('td input')].map(inp => (inp.value || '').trim());
-        rows.push(cells);
+  document.querySelectorAll('input[name=\"directOption\"]').forEach(r=>{
+    r.addEventListener('change', ()=>{
+      const v = document.querySelector('input[name=\"directOption\"]:checked').value;
+      document.getElementById('ccHoldFields').style.display = (v==='cchold')? 'block':'none';
+      showPreview();
+    })
+  })
+
+  // Deposit table
+  const depositTable = document.getElementById('depositTable').querySelector('tbody');
+  document.getElementById('addDepositRowBtn').addEventListener('click', addDepositRow);
+  function addDepositRow(vals={}){
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td><input type=\"text\" class=\"dp-type\" value=\"${vals.type||''}\"/></td>
+      <td><input type=\"text\" class=\"dp-form\" value=\"${vals.form||''}\"/></td>
+      <td><input type=\"text\" class=\"dp-due\" value=\"${vals.due||''}\"/></td>
+      <td><input type=\"text\" class=\"dp-amt\" value=\"${vals.amt||''}\"/></td>
+      <td><input type=\"text\" class=\"dp-notes\" value=\"${vals.notes||''}\"/></td>
+      <td class=\"right\"><button type=\"button\" class=\"danger\" onclick=\"this.closest('tr').remove(); window.showPreview();\">Remove</button></td>`;
+    depositTable.appendChild(tr);
+    tr.querySelectorAll('input').forEach(inp=> inp.addEventListener('input', showPreview));
+    showPreview();
+  }
+  // Seed default deposit rows
+  addDepositRow({type:'Deposit', form:'', due:'Upon Signing', amt:'', notes:'25% of the anticipated charges'});
+  addDepositRow({type:'Deposit', form:'', due:'(MM/DD/YYYY) 90 Days Prior', amt:'', notes:'50% of the anticipated charges'});
+  addDepositRow({type:'Deposit', form:'', due:'(MM/DD/YYYY) 30 Days Prior', amt:'', notes:'Remaining balance of anticipated charges'});
+  addDepositRow({type:'Additional Deposit', form:'', due:'(MM/DD/YYYY) 30 Days Prior', amt:'', notes:'10% of total anticipated revenue to be refunded post-event to the extent unused'});
+  addDepositRow({type:'Balance Due', form:'', due:'', amt:'', notes:''});
+
+  // Totals fields for breakdown
+  const roomSubTotal = document.getElementById('roomSubTotal');
+  const fnbSubTotal = document.getElementById('fnbSubTotal');
+  const roomAP = document.getElementById('roomAP');
+  const roomService = document.getElementById('roomService');
+  const roomServiceTax = document.getElementById('roomServiceTax');
+  const fnbTax105 = document.getElementById('fnbTax105');
+  const fnbService = document.getElementById('fnbService');
+  const fnbServiceTax95 = document.getElementById('fnbServiceTax95');
+  const grandTotal = document.getElementById('grandTotal');
+
+  const fnbOverall = document.getElementById('fnbOverall');
+  fnbOverall.addEventListener('input', ()=>{ recalcAll(); showPreview(); });
+
+  function sumAgendaRoom(){
+    let sum=0;
+    agendaTable.querySelectorAll('tr').forEach(tr=>{ sum += parseCurrency(tr.querySelector('.ag-room')?.value); });
+    return sum;
+  }
+  function sumAgendaFnb(){
+    let sum=0;
+    agendaTable.querySelectorAll('tr').forEach(tr=>{ sum += parseCurrency(tr.querySelector('.ag-fnb')?.value); });
+    return sum;
+  }
+  function sumPerDayFnb(){
+    let sum=0; 
+    perDayTable.querySelectorAll('tr').forEach(tr=>{ sum += parseCurrency(tr.querySelector('.pd-amt')?.value); });
+    return sum;
+  }
+
+  function recalcAll(){
+    // Room subtotal
+    const autoRoom = sumAgendaRoom();
+    totalRoomRentalAuto.value = fmtCurrency(autoRoom);
+    const roomSubtotal = (parseCurrency(totalRoomRentalOverride.value) || autoRoom);
+
+    // F&B subtotal source
+    let fnbSubtotal = parseCurrency(fnbOverall.value);
+    if(includePerDayFnb.checked){
+      const perDaySum = sumPerDayFnb();
+      if(perDaySum>0) fnbSubtotal = perDaySum; // use per-day sum when present
+    } else {
+      if(!fnbSubtotal){
+        const agendaFnb = sumAgendaFnb();
+        fnbSubtotal = agendaFnb;
       }
-      // Build a simple markdown-like table for copy+paste
-      const sep = '|';
-      const headerLine = sep + headers.join(sep) + sep;
-      const ruleLine   = sep + headers.map(()=>'---').join(sep) + sep;
-      const rowLines   = rows.map(r => sep + r.map(c => c || ' ').join(sep) + sep);
-      return [headerLine, ruleLine, ...rowLines].join('\n');
     }
 
-    // --- Build text table for Deposit Schedule (conditional) ---
-    function buildDepositTextTable() {
-      const depRows = document.querySelectorAll('#depositTable tbody tr');
-      const headers = ['Payment Type','Payment Form','Due Date','Deposit Amount','Notes'];
-      const sep = '|';
-      const headerLine = sep + headers.join(sep) + sep;
-      const ruleLine   = sep + headers.map(()=>'---').join(sep) + sep;
-      const rowLines = [];
-      depRows.forEach(tr => {
-        const tds = tr.querySelectorAll('td');
-        const vals = [];
-        // td0 Payment Type (text)
-        vals.push(tds[0].textContent.trim());
-        // td1 Payment Form (text)
-        vals.push(tds[1].textContent.trim());
-        // td2 Due Date (text or input)
-        const due = tds[2].querySelector('input') ? tds[2].querySelector('input').value.trim() : tds[2].textContent.trim();
-        vals.push(due || ' ');
-        // td3 Amount (input)
-        const amt = tds[3].querySelector('input') ? tds[3].querySelector('input').value.trim() : tds[3].textContent.trim();
-        vals.push(amt || ' ');
-        // td4 Notes (text)
-        vals.push(tds[4].textContent.trim());
-        rowLines.push(sep + vals.join(sep) + sep);
-      });
-      return [headerLine, ruleLine, ...rowLines].join('\n');
-    }
+    // Calculations per Kelsey
+    const room_ap = roomSubtotal * 0.02; // 2%
+    const room_serv = roomSubtotal * 0.23; // 23%
+    const room_tax_on_service = room_serv * 0.095; // 9.5% on service only
 
-    // --- Contract Preview Builder ---
-    function updatePreview() {
-      let tmpl = document.getElementById('templateArea').value || '';
+    const fnb_tax_105 = fnbSubtotal * 0.105; // 10.5% on subtotal
+    const fnb_serv = fnbSubtotal * 0.23; // 23% on subtotal
+    const fnb_tax_on_service_95 = fnb_serv * 0.095; // 9.5% on service only
 
-      // Replace basic placeholders [1]..[12]
-      for (let i = 1; i <= 12; i++) {
-        const re = new RegExp('\\[' + i + '\\]', 'g');
-        tmpl = tmpl.replace(re, (val('f' + i) || ''));
-      }
+    const total = roomSubtotal + room_ap + room_serv + room_tax_on_service + fnbSubtotal + fnb_tax_105 + fnb_serv + fnb_tax_on_service_95;
 
-      // Replace [9 + 11] and [10 + 12] math with formatted sums
-      const v9  = parseAmount(val('f9'));
-      const v10 = parseAmount(val('f10'));
-      const v11 = parseAmount(val('f11'));
-      const v12 = parseAmount(val('f12'));
-      const sum911 = formatCurrency((isFinite(v9) && isFinite(v11)) ? (v9 + v11) : NaN);
-      const sum1012 = formatCurrency((isFinite(v10) && isFinite(v12)) ? (v10 + v12) : NaN);
-      tmpl = tmpl.replace(/\[9 \+ 11\]/g, sum911 || '');
-      tmpl = tmpl.replace(/\[10 \+ 12\]/g, sum1012 || '');
+    roomSubTotal.value = fmtCurrency(roomSubtotal);
+    fnbSubTotal.value = fmtCurrency(fnbSubtotal);
+    roomAP.value = fmtCurrency(room_ap);
+    roomService.value = fmtCurrency(room_serv);
+    roomServiceTax.value = fmtCurrency(room_tax_on_service);
+    fnbTax105.value = fmtCurrency(fnb_tax_105);
+    fnbService.value = fmtCurrency(fnb_serv);
+    fnbServiceTax95.value = fmtCurrency(fnb_tax_on_service_95);
+    grandTotal.value = fmtCurrency(total);
 
-      // Format [9] and [10] if they appear with $ immediately before (light touch)
-      tmpl = tmpl.replace(/\$\[9\]/g, formatCurrency(isFinite(v9) ? v9 : NaN) || ('$' + (val('f9') || '')));
-      tmpl = tmpl.replace(/\$\[10\]/g, formatCurrency(isFinite(v10) ? v10 : NaN) || ('$' + (val('f10') || '')));
+    // Cancellation totals
+    const canF = parseCurrency(document.getElementById('cancelFnb').value) || fnbSubtotal;
+    const canR = parseCurrency(document.getElementById('cancelRoom').value) || roomSubtotal;
+    const canO = parseCurrency(document.getElementById('cancelOther').value);
+    document.getElementById('cancelTotal').value = fmtCurrency(canF + canR + canO);
+  }
+  window.recalcAll = recalcAll;
 
-      // Insert Function Agenda text table
-      tmpl = tmpl.replace(/\[insert table "Function Agenda"\]/g, buildAgendaTextTable());
+  document.getElementById('cancelFnb').addEventListener('input', ()=>{ recalcAll(); showPreview(); });
+  document.getElementById('cancelRoom').addEventListener('input', ()=>{ recalcAll(); showPreview(); });
+  document.getElementById('cancelOther').addEventListener('input', ()=>{ recalcAll(); showPreview(); });
 
-      // Conditional: Deposit Schedule table insertion
-      const depSel = document.querySelector('input[name="deposit"]:checked');
-      const showDeposit = depSel && (depSel.value === 'yes9030' || depSel.value === 'yesOther');
-      const depositTextTable = buildDepositTextTable();
-      if (showDeposit) {
-        tmpl = tmpl.replace(/\[Input table "Deposit Schedule" if either "Yes" option is selected\]/g, depositTextTable);
-      } else {
-        tmpl = tmpl.replace(/\[Input table "Deposit Schedule" if either "Yes" option is selected\]/g, '');
-      }
+  // Preview & Exports
+  const btnPreview = document.getElementById('btnPreview');
+  const btnDocx = document.getElementById('btnDocx');
+  const btnPdf = document.getElementById('btnPdf');
+  const btnCopy = document.getElementById('btnCopy');
+  const btnCopyRich = document.getElementById('btnCopyRich');
+  const preview = document.getElementById('preview');
+  const previewCard = document.getElementById('previewCard');
 
-      // Conditional: Function Room Usage Fees blocks
-      const roomFeeSel = document.querySelector('input[name="roomFee"]:checked');
-      const choice = roomFeeSel ? roomFeeSel.value : null;
+  const logoInput = document.getElementById('logoInput');
+  let logoDataUrl = '';
+  logoInput.addEventListener('change', async (e)=>{
+    const f = e.target.files?.[0];
+    if(!f) return;
+    const reader = new FileReader();
+    reader.onload = ev => { logoDataUrl = ev.target.result; showPreview(); };
+    reader.readAsDataURL(f);
+  });
 
-      // Remove WAIVED block if fee selected; or remove FEE block if waived selected
-      // Identify blocks by headings:
-      // "ROOM RENTAL FEE [if matching radio box is selected]" ... up to next heading "WAIVED ROOM RENTAL FEE ..."
-      // Then "WAIVED ROOM RENTAL FEE ..." ... up to next heading "Failure to Vacate"
-      function removeBlock(text, startHeading, endHeading) {
-        const startIdx = text.indexOf(startHeading);
-        if (startIdx === -1) return text;
-        const endIdx = text.indexOf(endHeading, startIdx + startHeading.length);
-        const cutoff = endIdx !== -1 ? endIdx : text.length;
-        return text.slice(0, startIdx) + text.slice(cutoff);
-      }
-      if (choice === 'fee') {
-        tmpl = removeBlock(tmpl, 'WAIVED ROOM RENTAL FEE [if matching radio box is selected]', 'Failure to Vacate');
-        // Also strip the marker "[if matching radio box is selected]" from retained heading
-        tmpl = tmpl.replace('ROOM RENTAL FEE [if matching radio box is selected]', 'ROOM RENTAL FEE');
-      } else if (choice === 'waived') {
-        tmpl = removeBlock(tmpl, 'ROOM RENTAL FEE [if matching radio box is selected]', 'WAIVED ROOM RENTAL FEE [if matching radio box is selected]');
-        tmpl = tmpl.replace('WAIVED ROOM RENTAL FEE [if matching radio box is selected]', 'WAIVED ROOM RENTAL FEE');
-      } else {
-        // No selection: keep both headings but remove markers
-        tmpl = tmpl.replace('ROOM RENTAL FEE [if matching radio box is selected]', 'ROOM RENTAL FEE');
-        tmpl = tmpl.replace('WAIVED ROOM RENTAL FEE [if matching radio box is selected]', 'WAIVED ROOM RENTAL FEE');
-      }
-
-      // Cosmetic: Convert '//' markers to blank line spacing
-      tmpl = tmpl.replace(/\n\/\/\s*/g, '\n\n');
-
-      // Set preview
-      document.getElementById('preview').textContent = tmpl;
-    }
-
-    // Wire inputs to live preview updates
-    for (let i = 1; i <= 12; i++) {
-      document.getElementById('f' + i).addEventListener('input', updatePreview);
-    }
-    document.querySelectorAll('.revInput').forEach(inp => inp.addEventListener('input', updatePreview));
-    document.querySelectorAll('.depDue, .depAmt').forEach(inp => inp.addEventListener('input', updatePreview));
-    document.getElementById('templateArea').addEventListener('input', updatePreview);
-    document.getElementById('refreshPreview').addEventListener('click', updatePreview);
-
-    // Initial preview
-    updateDepositVisibility();
-    updatePreview();
-
-    // Copy to clipboard
-    document.getElementById('copyPreview').addEventListener('click', async () => {
-      const text = document.getElementById('preview').textContent || '';
-      try {
-        await navigator.clipboard.writeText(text);
-        const btn = document.getElementById('copyPreview');
-        const old = btn.textContent;
-        btn.textContent = 'Copied!';
-        setTimeout(() => btn.textContent = old, 1500);
-      } catch {
-        alert('Copy failed. You can manually select and copy the text.');
-      }
+  function collectAgendaRows(){
+    const rows=[];
+    agendaTable.querySelectorAll('tr').forEach(tr=>{
+      rows.push({
+        date: tr.querySelector('.ag-date')?.value,
+        time: tr.querySelector('.ag-time')?.value,
+        type: tr.querySelector('.ag-type')?.value,
+        space: tr.querySelector('.ag-space')?.value,
+        setup: tr.querySelector('.ag-setup')?.value,
+        heads: tr.querySelector('.ag-heads')?.value,
+        room: parseCurrency(tr.querySelector('.ag-room')?.value),
+        fnb: parseCurrency(tr.querySelector('.ag-fnb')?.value),
+      })
     });
-  </script>
+    return rows;
+  }
+  function collectPerDay(){
+    const rows=[]; 
+    perDayTable.querySelectorAll('tr').forEach(tr=>{
+      rows.push({ date: tr.querySelector('.pd-date')?.value, amt: parseCurrency(tr.querySelector('.pd-amt')?.value) });
+    });
+    return rows;
+  }
+  function collectDeposits(){
+    const rows=[];
+    depositTable.querySelectorAll('tr').forEach(tr=>{
+      rows.push({
+        type: tr.querySelector('.dp-type')?.value,
+        form: tr.querySelector('.dp-form')?.value,
+        due: tr.querySelector('.dp-due')?.value,
+        amt: parseCurrency(tr.querySelector('.dp-amt')?.value),
+        notes: tr.querySelector('.dp-notes')?.value,
+      })
+    });
+    return rows;
+  }
+
+  function makeFilename(){
+    const pat = document.getElementById('filenamePattern').value || 'CSA_{EventName}_{GroupName}_{YYYYMMDD}';
+    const out = pat
+      .replace('{EventName}', (document.getElementById('eventName').value||'EVENT').replace(/\s+/g,'_'))
+      .replace('{GroupName}', (document.getElementById('groupName').value||'GROUP').replace(/\s+/g,'_'))
+      .replace('{YYYYMMDD}', todayYYYYMMDD());
+    return out;
+  }
+
+  function escHtml(s){
+    return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/\"/g,'&quot;');
+  }
+
+  function buildContractHTML(){
+    // gather
+    const groupName = document.getElementById('groupName').value;
+    const pcName = document.getElementById('pcName').value;
+    const pcPhone = document.getElementById('pcPhone').value;
+    const pcEmail = document.getElementById('pcEmail').value;
+    const pcAddress = document.getElementById('pcAddress').value;
+    const eventName = document.getElementById('eventName').value;
+    const arr = document.getElementById('arrival').value; 
+    const dep = document.getElementById('departure').value;
+    const arrTxt = longDate(arr);
+    const depTxt = longDate(dep);
+
+    const showConcessions = includeConcessions.checked;
+    const concessions = document.getElementById('concessionsText').value;
+
+    const agenda = collectAgendaRows();
+    const agendaRowsHtml = agenda.map(r=>`<tr>
+      <td>${escHtml(longDate(r.date))}</td>
+      <td>${escHtml(r.time)}</td>
+      <td>${escHtml(r.type)}</td>
+      <td>${escHtml(r.space)}</td>
+      <td>${escHtml(r.setup)}</td>
+      <td>${escHtml(r.heads)}</td>
+      <td>${fmtCurrency(r.room)}</td>
+      <td>${fmtCurrency(r.fnb)}</td>
+    </tr>`).join('');
+
+    const totalRoomAuto = parseCurrency(totalRoomRentalAuto.value);
+    const totalRoom = parseCurrency(totalRoomRentalOverride.value) || totalRoomAuto;
+
+    const fnbOverallVal = parseCurrency(fnbOverall.value);
+    const perDayRows = collectPerDay();
+    const perDayHtml = perDayRows.map(r=>`<tr><td>${escHtml(longDate(r.date))}</td><td>${fmtCurrency(r.amt)}</td></tr>`).join('');
+
+    // Billing
+    const billingMethod = document.querySelector('input[name=\"billingMethod\"]:checked').value;
+    const deposits = collectDeposits();
+
+    // Breakdown numbers
+    const roomSubtotal = parseCurrency(roomSubTotal.value);
+    const room_ap = parseCurrency(roomAP.value);
+    const room_serv = parseCurrency(roomService.value);
+    const room_serv_tax = parseCurrency(roomServiceTax.value);
+    const fnbSubtotal = parseCurrency(fnbSubTotal.value);
+    const fnb_tax_105 = parseCurrency(fnbTax105.value);
+    const fnb_serv = parseCurrency(fnbService.value);
+    const fnb_serv_tax_95 = parseCurrency(fnbServiceTax95.value);
+    const totalAll = parseCurrency(grandTotal.value);
+
+    // Direct billing details
+    const directOption = document.querySelector('input[name=\"directOption\"]:checked')?.value;
+    const ccAmt = parseCurrency(document.getElementById('ccHoldAmount').value);
+    const ccDays = document.getElementById('ccConvertDays').value;
+
+    // Cancellation
+    const cancelF = parseCurrency(document.getElementById('cancelFnb').value) || fnbSubtotal;
+    const cancelR = parseCurrency(document.getElementById('cancelRoom').value) || roomSubtotal;
+    const cancelO = parseCurrency(document.getElementById('cancelOther').value);
+    const cancelT = cancelF + cancelR + cancelO;
+
+    // Logo block
+    const logoBlock = logoDataUrl ? `<div style=\"text-align:left; margin-bottom:8px\"><img src=\"${logoDataUrl}\" alt=\"Logo\" style=\"height:60px\"/></div>` : '';
+
+    // Sections conditionals
+    const concessionsHtml = showConcessions ? `
+      <p><strong>Special Concessions</strong><br/>If specified in writing at the time of contracting, the Hotel may extend concessions. Any concessions will be contingent on the Group meeting its room night and food and beverage commitments and may be adjusted proportionately if actual revenues are reduced. All concessions are based upon minimum group room achievement and may, at Hotel’s sole discretion, be reduced or dissolved upon a lack of room night pickup.</p>
+      <p><strong>Concessions Offered By Hotel:</strong><br/>${escHtml(concessions)}</p>
+    ` : '';
+
+    const perDaySection = (includePerDayFnb.checked && perDayRows.length>0) ? `
+      <p><strong>Food and Beverage Minimum and Performance (Per‑Day)</strong></p>
+      <table>
+        <tr><th>Date</th><th>F&B Minimum</th></tr>
+        ${perDayHtml}
+      </table>
+    ` : '';
+
+    const depositScheduleSection = (billingMethod==='deposit') ? `
+      <p><strong>Deposits and Payment Schedule</strong></p>
+      <table>
+        <tr><th>Payment Type</th><th>Payment Form</th><th>Due Date</th><th>Deposit Amount</th><th>Notes</th></tr>
+        ${deposits.map(d=>`<tr><td>${escHtml(d.type)}</td><td>${escHtml(d.form)}</td><td>${escHtml(d.due)}</td><td>${fmtCurrency(d.amt)}</td><td>${escHtml(d.notes)}</td></tr>`).join('')}
+      </table>
+      <p><strong>Deposit Schedule Breakdown</strong><br/>
+        Room Rental = ${fmtCurrency(roomSubtotal)} + 2% A&P = ${fmtCurrency(room_ap)} + 23% Service = ${fmtCurrency(room_serv)} + 9.5% Sales Tax on Service = ${fmtCurrency(room_serv_tax)}<br/>
+        Food & Beverage Minimum = ${fmtCurrency(fnbSubtotal)} + 10.5% Sales Tax = ${fmtCurrency(fnb_tax_105)} + 23% Service = ${fmtCurrency(fnb_serv)} + 9.5% Sales Tax on Service = ${fmtCurrency(fnb_serv_tax_95)}<br/>
+        <strong>Total Anticipated Revenue (inclusive of taxes/service) = ${fmtCurrency(totalAll)}</strong>
+      </p>
+    ` : '';
+
+    const directBillingSection = (billingMethod==='direct') ? `
+      <p><strong>Direct Billing</strong><br/>
+      Subject to the Hotel’s prior credit approval, the Group may be invoiced for all charges without an advance deposit. The Hotel may require the Group to complete a credit application and reserves the right to deny credit or limit the amount of credit. Any outstanding balance of the Master Account will be due upon receipt of the final invoice. If payment of all undisputed amounts is not received within thirty (30) days, finance charges of 1.5 % per month (18 % per year) or the maximum rate allowed by law, whichever is less, will accrue on the unpaid balance commencing on the invoice date. If the Hotel must engage an attorney or pursue arbitration or litigation to collect unpaid amounts, the Group will be liable for the Hotel’s reasonable attorney’s fees and costs.</p>
+      ${directOption==='cchold' ? `<p><strong>Credit Card Hold/Deposit</strong><br/>The Hotel may place a hold on a major credit card in the amount of ${fmtCurrency(ccAmt)}${ccDays? 
+        ` as security for the Master Account. At any time on or after ${escHtml(ccDays)} days before the Arrival Date, the Hotel may convert the hold into a deposit.` : 
+        ` as security for the Master Account.`}
+      </p>` : `<p><strong>Billing at Time of Signing</strong><br/>All charges will be billed at 100% at the time of signing. No advance deposits or credit card holds are required.</p>`}
+    ` : '';
+
+    // Contract HTML
+    const html = `
+    <div style=\"font-family:Georgia, 'Times New Roman', serif; color:#111; line-height:1.4\">
+      ${logoBlock}
+      <p><strong>200 East Central Ave.<br/>Bentonville, AR<br/>72712</strong></p>
+      <h2 style=\"margin-top:0\">Catering Sales Agreement</h2>
+      <p>This Group Sales Agreement (the “Agreement”) is made by and between the legal owner entity of <strong>The Compton Bentonville</strong> (the “Hotel”) located at <strong>200 East Central Ave., Bentonville, AR 72712</strong>, and <strong>${escHtml(groupName||'Name of Group/Contact')}</strong> (the “Group”). This Agreement becomes binding only after it is executed by both parties. Blank spaces herein are intended to be completed at the time of contracting for a specific event and should remain blank until that time.</p>
+
+      <h3><u>DESCRIPTION OF GROUP AND EVENT</u></h3>
+      <table>
+        <tr><th>Primary Contact Name</th><th>${escHtml(pcName)}</th></tr>
+        <tr><td>Primary Contact Phone</td><td>${escHtml(pcPhone)}</td></tr>
+        <tr><td>Primary Contact Email</td><td>${escHtml(pcEmail)}</td></tr>
+        <tr><td>Primary Contact Address</td><td>${escHtml(pcAddress).replace(/\\n/g,'<br/>')}</td></tr>
+        <tr><td><strong>Event Name</strong></td><td>${escHtml(eventName)}</td></tr>
+        <tr><td><strong>Event Dates (Arrival/Departure)</strong></td><td>${escHtml(arrTxt)} – ${escHtml(depTxt)}</td></tr>
+      </table>
+
+      <p><strong>Parking</strong><br/>Hotel offers complimentary self‑parking in downtown Bentonville on a first‑come, first‑served basis. Guests may park in any public parking structure or surface lot in the vicinity of the hotel at the driver’s own risk and subject to availability. Hotel does not guarantee the availability of a specific space and is not liable for loss or damage to vehicles or their contents. Valet parking is available at the hotel’s front drive at a rate of $17 for day‑use, or $30 per night, subject to prevailing taxes and fees.</p>
+
+      ${concessionsHtml}
+
+      <h3><u>FUNCTION ROOM AND CATERING SERVICES</u></h3>
+      <p><strong>Function Agenda</strong><br/>If the Group requires meeting or banquet facilities, the Hotel will reserve the function space described below:</p>
+      <table>
+        <tr>
+          <th><strong>Date</strong><br/>MM/DD/YYYY</th>
+          <th><strong>Time</strong><br/>(AM/PM)</th>
+          <th><strong>Event Type</strong></th>
+          <th><strong>Function Space</strong></th>
+          <th><strong>Setup Style</strong></th>
+          <th><strong>Anticipated Attendance</strong></th>
+          <th><strong>Room Rental</strong></th>
+          <th><strong>Minimum</strong></th>
+        </tr>
+        ${agendaRowsHtml || '<tr><td colspan=\"8\">&nbsp;</td></tr>'}
+      </table>
+
+      <p>The total anticipated function room revenue is ${fmtCurrency(totalRoom)} (exclusive of taxes and service charges). The Hotel reserves the right to substitute function space with comparable space if the Group’s needs change or if the reserved space becomes unavailable.</p>
+
+      <p><strong>Function Room Usage Fees</strong><br/>
+      <strong>ROOM RENTAL FEE</strong> The Hotel will charge the Group a function room usage fee as quoted above. Fees are subject to applicable taxes. The Hotel may adjust the fee if the Room Block or the size/number of functions is reduced.<br/>
+      <strong>WAIVED ROOM RENTAL FEE</strong> The Hotel will waive room rental fees if the Group meets the food and beverage minimum defined below. If the Group fails to meet the minimum, room rental fees at prevailing rates will be charged.</p>
+
+      <p><strong>Failure to Vacate</strong><br/>All events must conclude, and all guests, vendors, and personal property must be fully vacated from the function space by the designated end time stated in the above function agenda. Failure to vacate the function space(s) by the agreed‑upon time may result in additional charges, including but not limited to overtime labor fees, extended room rental, and security costs. The Compton Bentonville reserves the right to remove or dispose of any items left on the premises after the event concludes and shall not be held liable for any loss or damage resulting therefrom.</p>
+
+      <p><strong>Taxes, Service Charges, and Gratuities</strong><br/>All charges are subject to a 23% service charge, as well as applicable federal, state, and local taxes. Taxes and service charges are subject to change at any time, and the Group shall be responsible for payment of any increases in effect at the time of the event. Additional gratuities are at the Group’s discretion. Please consult with your Sales Manager for a list of applicable taxes and fees.</p>
+
+      <p><strong>Function Room Set‑Up and Operation</strong><br/>The Group must obtain the Hotel’s written approval before installing equipment, displays or decorations. The Group is responsible for any damage or injury arising from such items and shall indemnify and hold the Hotel harmless from related claims. Additional charges may apply for elaborate setups, specialty equipment, rigging or room re‑sets. Final function room setup specifications are due from the Group fourteen (14) days prior to the event start date. All function room setups must be approved by Hotel’s Conference Services Manager. Any setup changes requested within seventy‑two (72) hours of the event start date that the Hotel deems excessive will incur a minimum fee of five hundred dollars ($500). Glitter, confetti, loose sequins, rice, sparklers, open flames, or any similar materials are not permitted in any Hotel space. The Hotel reserves the right, at its sole discretion, to remove any decor that is deemed unsafe, damaging to the property, or not in alignment with Hotel guidelines.</p>
+
+      <p><strong>Approved Vendor List</strong><br/>To preserve the quality, safety, and overall guest experience of events hosted at The Compton, the Hotel maintains an Approved Vendor List of qualified professionals. All vendors providing services on property must be selected from this list unless prior written approval is granted by the hotel. The current list of approved vendors will be made available to the Group upon request. The Hotel reserves the right to update or modify the Approved Vendor List at its discretion.</p>
+
+      <p><strong>Food and Beverage Minimum and Performance</strong><br/>The rates and concessions offered are based on the food and beverage minimum. If the Group’s actual food and beverage revenue (excluding taxes, service charges, audio‑visual, parking and other miscellaneous charges) is less than <strong>${fmtCurrency(fnbSubtotal||fnbOverallVal)}</strong> (the “Food and Beverage Minimum”), then the Group shall pay as liquidated damages the difference between the minimum and actual revenue (the “Food and Beverage Performance Fee”). Any performance fee will be added to the Master Account. The Group remains liable for room rental fees and other charges.</p>
+
+      ${perDaySection}
+
+      <p><strong>Food and Beverage Policies</strong><br/>All food and beverage served on Hotel premises must be supplied and prepared by the Hotel, unless otherwise agreed in writing. Leftover food and beverage may not be removed from the Hotel. Menu selections must be provided no later than twenty‑one (21) days prior to the Event start date (the “Menu Deadline”). Final attendance guarantees must be provided fourteen (14) days before the Event start date; otherwise, the number in this Agreement will be used. Charges will be based on the final guarantee even if fewer guests attend. The Hotel reserves the right to charge for special dietary requests not confirmed in writing. Menu offerings and pricing are confirmed ninety (90) days prior to the event start date. Any proposals shared or selections made more than ninety (90) days before the event start date are subject to change.</p>
+
+      <h3><u>BILLING AND CREDIT PROCEDURES</u></h3>
+      <p><strong>Master Account and Authorized Representatives</strong><br/>A “Master Account” will be established to record all charges payable by the Group under this Agreement (including sleeping rooms, food and beverage, room rental, audio‑visual, parking, service charges, taxes and performance/cancellation fees). The Group shall designate in writing, at least forty‑five (45) days prior to the Arrival Date, one or more representatives authorized to incur charges to the Master Account. The Group acknowledges that any person who signs a banquet event order or makes arrangements on site shall be deemed an authorized representative.</p>
+
+      ${depositScheduleSection}
+      ${directBillingSection}
+
+      <h3><u>CANCELLATION AND REDUCTION OF COMMITMENT</u></h3>
+      <p><strong>Cancellation by Group</strong><br/>Should the Group cancel this Agreement after signing, the Group agrees to pay liquidated damages as a reasonable estimation of the Hotel’s losses. Liquidated damages will be calculated as a percentage of the <strong>Total Anticipated Revenue</strong> (sleeping room revenue plus estimated taxes and food and beverage commitments) based on the date the Hotel receives written notice of cancellation:</p>
+      <table>
+        <tr><th colspan=\"2\">Summary of Revenue Anticipated by Hotel</th></tr>
+        <tr><td>Total Anticipated Food and Beverage Revenue</td><td>${fmtCurrency(cancelF)}</td></tr>
+        <tr><td>Anticipated Function Room Usage Fees</td><td>${fmtCurrency(cancelR)}</td></tr>
+        <tr><td>Anticipated Additional Revenue (AV, Valet, Parcel Handling, etc.)</td><td>${fmtCurrency(cancelO)}</td></tr>
+        <tr><td>Total Anticipated Revenue</td><td>${fmtCurrency(cancelT)}</td></tr>
+        <tr><td colspan=\"2\"><em>** This figure does not include service charges, taxes or fees for services by any authorized outside vendors.</em></td></tr>
+      </table>
+
+      <table>
+        <tr><th>Date of Cancellation Notice</th><th>Cancellation Fee (as % of Total Anticipated Revenue)</th></tr>
+        <tr><td>From signing until 365 days prior to arrival</td><td>25%</td></tr>
+        <tr><td>364 to 180 days prior to arrival</td><td>50%</td></tr>
+        <tr><td>179 to 31 days prior to arrival</td><td>75%</td></tr>
+        <tr><td>30 days to arrival</td><td>100%</td></tr>
+      </table>
+
+      <p><strong>Cancellation by Hotel</strong><br/>The Hotel may cancel this Agreement without liability if (i) deposits or payments are not received by the due dates; (ii) the Group or its attendees materially breach any obligation under this Agreement or any other agreement with the Hotel; or (iii) events beyond the Hotel’s control render performance illegal or impossible (see Force Majeure below).</p>
+
+      <p><strong>Force Majeure / Impossibility</strong><br/>Neither party shall be liable for failure to perform under this Agreement if unanticipated circumstances beyond its reasonable control (including acts of God, declared war, terrorism in the city where the Hotel is located, government regulations, disasters, strikes, civil disorder, pandemics, curtailment of transportation or similar events) make it illegal, impossible or commercially impracticable for the Hotel to provide or for the Group to use the Hotel’s facilities. The party invoking this clause must provide written notice to the other within ten (10) days of learning of the occurrence. Performance will be excused for the duration of the force majeure event, provided that payment obligations for services already rendered remain due. If the event continues for more than 4 days, either party may terminate the Agreement without liability and deposits paid will be refunded.</p>
+
+      <h3><u>MISCELLANEOUS</u></h3>
+      <p><strong>Museum Artwork and Exhibits</strong><br/>The Compton Bentonville also functions as an active museum space featuring rotating exhibitions. As an operating gallery, the artwork and installations on display are subject to change at any time without notice to the group. Due to the nature and value of the artwork, the Group acknowledges that all exhibited pieces will remain on display throughout the event and may not be removed, relocated, covered, leaned against, affixed to, or otherwise altered in any way. The Group shall be responsible for any damage resulting from its event, guests, vendors, or delegates.</p>
+      <p><strong>Signage and Displays</strong><br/>The Group shall not use the Hotel’s name or logo in promotional materials without prior written approval. No sign, banner or display shall be affixed to any part of the Hotel without the Hotel’s written consent. The Group will be responsible for any damage caused by its signage or displays.</p>
+      <p><strong>Shipping, Handling, and Storage</strong><br/>The Hotel will accept deliveries up to three (3) business days prior to the Event Date start. Shipping, handling, and storage fees may apply. All shipments must be labeled according to the Hotel’s guidelines, which will be provided once notice is received. The Group is responsible for properly labeling and scheduling all return shipments.</p>
+      <p><strong>Security</strong><br/>The Hotel may require additional security personnel based on the nature or size of the Group’s event. Such security will be arranged by the Hotel or its approved contractors at the Group’s expense. Armed security is not permitted without the Hotel’s prior written approval. If the Group hires its own security service, it must provide the Hotel with proof of insurance and an indemnity agreement naming the Hotel as an additional insured.</p>
+      <p><strong>Notices</strong><br/>All notices, requests or other communications under this Agreement must be in writing and delivered by hand, overnight courier or certified mail to the addresses on the first page of this Agreement (or such other addresses as either party may designate). Notices are effective upon delivery.</p>
+      <p><strong>Damage to Hotel and Group Property</strong><br/>The Group is liable for any damage to the Hotel caused by the Group, its attendees, agents, exhibitors or contractors. The Hotel is not responsible for loss of equipment, supplies or personal property left in guest rooms or function space. The Group is responsible for securing its own property and for carrying insurance sufficient to cover any losses.</p>
+      <p><strong>Indemnification</strong><br/>The Group shall indemnify, defend and hold harmless the Hotel and its owners, managers, affiliates, officers, directors, employees and agents from and against all claims, demands, damages, liabilities, fines, penalties, costs and expenses (including reasonable attorney’s fees) arising out of or in connection with the acts or omissions of the Group, its attendees, agents, contractors or exhibitors in connection with this Agreement, including without limitation any damage to property or injury to persons occurring in guest rooms or function space, any failure by the Group to pay taxes or fees, and any failure by the Group to comply with applicable laws. The Hotel shall not be required to indemnify the Group for any reason, and nothing herein shall be construed to impose on the Hotel any duty to indemnify or defend the Group. Notwithstanding the foregoing, neither party will be liable for claims to the extent directly caused by the gross negligence or willful misconduct of the other party.</p>
+      <p><strong>Insurance</strong><br/>Both parties agree to maintain, at their own expense, general liability insurance with limits of not less than $2,000,000 per occurrence (or such higher limits as may be commercially reasonable) covering bodily injury and property damage arising from their activities under this Agreement. Each party shall, upon written request, provide evidence of such coverage and shall name the other party as an additional insured for the duration of the event. The Group shall also require any third‑party vendors engaged for the event to carry appropriate insurance (including general liability and workers’ compensation) and to provide certificates of insurance naming the Hotel as an additional insured.</p>
+      <p><strong>Compliance with Laws and ADA</strong><br/>Both parties shall comply with all applicable federal, state and local laws, including health and safety codes, alcoholic beverage regulations, antiterrorism laws, and the public accommodation requirements of the Americans with Disabilities Act. The Group shall be responsible for the cost of any auxiliary aids or services requested by its attendees beyond those normally provided by the Hotel.</p>
+      <p><strong>Assignment</strong><br/>Neither party may assign or transfer this Agreement or its rights or obligations hereunder without the written consent of the other party, except that either party may assign this Agreement to an affiliate pursuant to an internal reorganization or to a successor by merger or sale of substantially all assets. Any attempted assignment without consent may be treated by the Hotel as a cancellation.</p>
+      <p><strong>Modification and Integration</strong><br/>This Agreement constitutes the entire understanding between the parties with respect to the Room Block and any scheduled functions and supersedes all prior proposals or communications. No amendment, modification or waiver of this Agreement will be effective unless in writing and signed by authorized representatives of both parties. Handwritten changes will not be binding unless initialed by both parties.</p>
+      <p><strong>Governing Law and Dispute Resolution</strong><br/>This Agreement will be governed by the laws of the state in which the Hotel is located. The parties agree to use commercially reasonable efforts to resolve any dispute through good‑faith discussions. If a dispute cannot be resolved within thirty (30) days, either party may elect to pursue mediation, binding arbitration (for example, under the rules of JAMS or the American Arbitration Association), or litigation in the state or federal courts where the Hotel is located. The Hotel may require a particular dispute resolution method to the extent permitted by applicable law, but all of the foregoing options remain available absent such requirement. The prevailing party in any mediation, arbitration or litigation shall be entitled to recover its reasonable attorney’s fees and costs. The parties waive the right to a jury trial to the extent permitted by law. Neither party shall be liable to the other for consequential or punitive damages.</p>
+      <p><strong>Miscellaneous Provisions</strong><br/>Failure of either party to enforce any provision of this Agreement shall not constitute a waiver of that provision. If any portion of this Agreement is found unenforceable, the remaining provisions shall remain in full force. The headings are for convenience only and do not affect the interpretation of the Agreement.</p>
+
+      <h3><u>EXECUTION OF AGREEMENT</u></h3>
+      <p>The Hotel’s delivery of an unsigned copy of this Agreement shall be deemed an invitation for the Group to make an offer. The Group’s return of a signed copy of this Agreement shall constitute an offer by the Group. The Hotel may accept the offer by signing within <strong>five (5)</strong> days of sending the unsigned Agreement to the Group. After <strong>five (5)</strong> days, the Hotel may modify rates, space or concessions before acceptance. Any handwritten changes must be initialed by both parties.</p>
+
+      <table>
+        <tr>
+          <th>
+            The Legal Representative of <strong>The Compton Bentonville</strong>
+            <table>
+              <tr><th><strong>By:</strong></th><th>The Compton Bentonville</th></tr>
+              <tr><th><strong>First / Last Name (Print):</strong></th><th>&nbsp;</th></tr>
+              <tr><th><strong>Title:</strong></th><th>&nbsp;</th></tr>
+              <tr><th><strong>Date:</strong></th><th>&nbsp;</th></tr>
+              <tr><th><strong>Signature:</strong></th><th>&nbsp;</th></tr>
+            </table>
+          </th>
+          <th>
+            <table>
+              <tr><th><strong>By:</strong></th><th>&nbsp;</th></tr>
+              <tr><th><strong>First / Last Name (Print):</strong></th><th>&nbsp;</th></tr>
+              <tr><th><strong>Title:</strong></th><th>&nbsp;</th></tr>
+              <tr><th><strong>Date:</strong></th><th>&nbsp;</th></tr>
+              <tr><th><strong>Signature:</strong></th><th>&nbsp;</th></tr>
+            </table>
+            The Legal Representative of <strong>The Group</strong>
+          </th>
+        </tr>
+      </table>
+    </div>`;
+
+    return html;
+  }
+  window.buildContractHTML = buildContractHTML;
+
+  function showPreview(){
+    const html = buildContractHTML();
+    preview.innerHTML = html;
+  }
+  window.showPreview = showPreview;
+
+  // Always-on preview: global listeners for instant updates
+  document.addEventListener('input', ()=>{ recalcAll(); showPreview(); });
+  document.addEventListener('change', ()=>{ recalcAll(); showPreview(); });
+
+  // Scroll-to-preview
+  btnPreview.addEventListener('click', () => {
+    showPreview();
+    window.scrollTo({ top: previewCard.offsetTop - 80, behavior: 'smooth' });
+  });
+
+  btnDocx.addEventListener('click', ()=>{
+    const html = buildContractHTML();
+    const blob = window.htmlDocx.asBlob(html, {orientation: 'portrait'});
+    saveAs(blob, makeFilename()+'.docx');
+  });
+
+  btnPdf.addEventListener('click', async ()=>{
+    showPreview();
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF('p','pt','letter');
+    const node = document.getElementById('preview');
+    const margin = 36; // 0.5"
+    const pageWidth = pdf.internal.pageSize.getWidth();
+    const contentWidth = pageWidth - margin*2;
+
+    const canvas = await html2canvas(node, {scale:2, useCORS:true, background:'#ffffff'});
+    const imgData = canvas.toDataURL('image/png');
+    const imgProps = pdf.getImageProperties(imgData);
+    const pdfWidth = contentWidth;
+    const pdfHeight = (imgProps.height * pdfWidth) / imgProps.width;
+
+    let y = margin;
+    let x = margin;
+
+    if (pdfHeight + margin*2 <= pdf.internal.pageSize.getHeight()){
+      pdf.addImage(imgData, 'PNG', x, y, pdfWidth, pdfHeight, undefined, 'FAST');
+    } else {
+      // Split across pages
+      let sY = 0;
+      const pageHeight = pdf.internal.pageSize.getHeight() - margin*2;
+      const pageCanvas = document.createElement('canvas');
+      const pageCtx = pageCanvas.getContext('2d');
+      const ratio = pdfWidth / canvas.width;
+      pageCanvas.width = canvas.width;
+      pageCanvas.height = Math.floor(pageHeight / ratio);
+      while (sY < canvas.height){
+        pageCtx.clearRect(0,0,pageCanvas.width,pageCanvas.height);
+        pageCtx.drawImage(canvas, 0, sY, canvas.width, pageCanvas.height, 0, 0, pageCanvas.width, pageCanvas.height);
+        const pageData = pageCanvas.toDataURL('image/png');
+        pdf.addImage(pageData, 'PNG', x, y, pdfWidth, pageHeight, undefined, 'FAST');
+        sY += pageCanvas.height;
+        if (sY < canvas.height){ pdf.addPage(); }
+      }
+    }
+    pdf.save(makeFilename()+'.pdf');
+  });
+
+  btnCopy.addEventListener('click', async ()=>{
+    const el = document.createElement('div');
+    el.innerHTML = buildContractHTML();
+    const text = el.innerText; // plain text for copy/paste
+    try{
+      await navigator.clipboard.writeText(text);
+      btnCopy.textContent = 'Copied!';
+      setTimeout(()=> btnCopy.textContent = 'Copy Filled Text', 1500);
+    } catch(e){
+      alert('Copy failed. Please use the Preview, select all, and copy.');
+    }
+  });
+
+  btnCopyRich.addEventListener('click', async ()=>{
+    const html = buildContractHTML();
+    try{
+      if (navigator.clipboard && window.ClipboardItem) {
+        const blob = new Blob([html], { type: 'text/html' });
+        const data = [new ClipboardItem({ 'text/html': blob })];
+        await navigator.clipboard.write(data);
+      } else {
+        // Fallback: select preview DOM and copy
+        const range = document.createRange();
+        range.selectNodeContents(document.getElementById('preview'));
+        const sel = window.getSelection();
+        sel.removeAllRanges();
+        sel.addRange(range);
+        document.execCommand('copy');
+        sel.removeAllRanges();
+      }
+      btnCopyRich.textContent = 'Copied!';
+      setTimeout(()=> btnCopyRich.textContent = 'Copy Rich Text', 1500);
+    } catch(e){
+      alert('Copy failed. Please select the preview and copy manually.');
+    }
+  });
+
+  // Render once on load (in case lock screen is bypassed in future tweaks)
+  showPreview();
+})();
+</script>
 </body>
 </html>
